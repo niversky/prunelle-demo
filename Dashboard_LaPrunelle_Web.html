@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Prunelle — Dashboard Analytique</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ─── Variables ─────────────────────────────────────────────── */
+:root{
+  --td:#0D4040; --tm:#1D6F6F; --t:#3A9E9E; --tl:#5BBFBF; --tll:#7ED8D8;
+  --tpal:#E8F7F7; --gold:#C9A84C; --gold2:#E8C97A;
+  --dark:#1A1A1A; --grey:#F4F6F8; --grey2:#E8ECEF;
+  --white:#FFFFFF; --red:#E74C3C; --green:#27AE60;
+  --font:'Montserrat',sans-serif; --serif:'Playfair Display',serif;
+  --radius:12px; --shadow:0 4px 24px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#F0F4F4;color:var(--dark);min-height:100vh}
+
+/* ─── Sidebar ───────────────────────────────────────────────── */
+.sidebar{
+  position:fixed;top:0;left:0;width:240px;height:100vh;
+  background:var(--td);display:flex;flex-direction:column;
+  z-index:100;overflow-y:auto;
+}
+.sidebar-logo{
+  padding:28px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sidebar-logo .brand{font-family:var(--serif);font-size:22px;color:var(--gold);letter-spacing:.5px}
+.sidebar-logo .sub{font-size:10px;color:var(--tll);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.sidebar-logo .badge{
+  display:inline-block;background:var(--gold);color:var(--td);
+  font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;
+  margin-top:8px;letter-spacing:1px;text-transform:uppercase;
+}
+.nav-section{padding:16px 0 4px 20px;font-size:9px;color:rgba(255,255,255,.35);
+  letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 20px;
+  color:rgba(255,255,255,.65);font-size:12px;font-weight:500;
+  cursor:pointer;transition:.2s;text-decoration:none;
+  border-left:3px solid transparent;
+}
+.nav-item:hover{background:rgba(255,255,255,.06);color:var(--tll);border-left-color:var(--tl)}
+.nav-item.active{background:rgba(90,191,191,.12);color:var(--tll);border-left-color:var(--tl)}
+.nav-item .ico{font-size:16px;width:20px;text-align:center}
+.sidebar-footer{margin-top:auto;padding:20px;border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-footer p{font-size:10px;color:rgba(255,255,255,.3);line-height:1.6}
+
+/* ─── Main ──────────────────────────────────────────────────── */
+.main{margin-left:240px;min-height:100vh;padding:0 0 40px}
+.topbar{
+  background:var(--white);padding:16px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--grey2);position:sticky;top:0;z-index:50;
+}
+.topbar h1{font-size:16px;font-weight:600;color:var(--td)}
+.topbar h1 span{color:var(--t)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.badge-live{
+  display:flex;align-items:center;gap:6px;background:var(--tpal);
+  color:var(--tm);font-size:11px;font-weight:600;padding:6px 14px;
+  border-radius:20px;
+}
+.badge-live::before{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--green);
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.date-badge{font-size:11px;color:#888;background:var(--grey);padding:6px 12px;border-radius:8px}
+
+/* ─── Page sections ─────────────────────────────────────────── */
+.page{display:none;padding:28px 32px}
+.page.active{display:block}
+
+/* ─── KPI Grid ──────────────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.kpi-card{
+  background:var(--white);border-radius:var(--radius);padding:22px 20px;
+  box-shadow:var(--shadow);border-top:3px solid transparent;
+  transition:.3s;position:relative;overflow:hidden;
+}
+.kpi-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.13)}
+.kpi-card.turq{border-top-color:var(--t)}
+.kpi-card.gold{border-top-color:var(--gold)}
+.kpi-card.green{border-top-color:var(--green)}
+.kpi-card.red{border-top-color:var(--red)}
+.kpi-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  margin-bottom:12px;
+}
+.kpi-icon.turq{background:rgba(58,158,158,.12)}
+.kpi-icon.gold{background:rgba(201,168,76,.12)}
+.kpi-icon.green{background:rgba(39,174,96,.12)}
+.kpi-icon.red{background:rgba(231,76,60,.1)}
+.kpi-val{font-size:26px;font-weight:700;color:var(--dark);line-height:1}
+.kpi-val small{font-size:14px;font-weight:400;color:#999;margin-left:2px}
+.kpi-label{font-size:11px;color:#888;margin-top:4px;font-weight:500;letter-spacing:.3px}
+.kpi-trend{
+  position:absolute;top:18px;right:18px;font-size:11px;font-weight:600;
+  padding:3px 8px;border-radius:8px;
+}
+.kpi-trend.up{background:#eafaf1;color:var(--green)}
+.kpi-trend.down{background:#fdf0ef;color:var(--red)}
+
+/* ─── Charts Row ────────────────────────────────────────────── */
+.charts-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:28px}
+.charts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
+.chart-card{
+  background:var(--white);border-radius:var(--radius);padding:22px;
+  box-shadow:var(--shadow);
+}
+.chart-card.full{grid-column:1/-1}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.chart-title{font-size:13px;font-weight:700;color:var(--td)}
+.chart-sub{font-size:10px;color:#999;margin-top:2px}
+.chart-badge{
+  font-size:10px;background:var(--tpal);color:var(--tm);
+  padding:3px 10px;border-radius:12px;font-weight:600;
+}
+.chart-wrap{position:relative;height:240px}
+.chart-wrap.tall{height:280px}
+.chart-wrap.short{height:180px}
+
+/* ─── Table ─────────────────────────────────────────────────── */
+.table-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:28px}
+.table-header{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--grey2)}
+.table-title{font-size:13px;font-weight:700;color:var(--td)}
+.table-search{
+  border:1px solid var(--grey2);border-radius:8px;padding:6px 12px;
+  font-size:11px;font-family:var(--font);color:var(--dark);
+  outline:none;transition:.2s;width:200px;
+}
+.table-search:focus{border-color:var(--t);box-shadow:0 0 0 3px rgba(58,158,158,.1)}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{
+  background:var(--td);color:rgba(255,255,255,.85);
+  padding:10px 14px;text-align:left;font-weight:600;font-size:10px;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.data-table td{padding:9px 14px;border-bottom:1px solid var(--grey);color:var(--dark)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--tpal)}
+.data-table .num{text-align:right;font-weight:600;color:var(--tm)}
+.data-table .ca{text-align:right;font-weight:700;color:var(--td)}
+.rank-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;font-size:10px;font-weight:700;
+}
+.rank-1{background:var(--gold);color:var(--white)}
+.rank-2{background:var(--grey2);color:var(--dark)}
+.rank-3{background:#d4a27a;color:var(--white)}
+.rank-n{background:var(--grey);color:#888}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:600}
+.pill-green{background:#eafaf1;color:var(--green)}
+.pill-red{background:#fdf0ef;color:var(--red)}
+.pill-grey{background:var(--grey);color:#999}
+.pill-gold{background:rgba(201,168,76,.15);color:#8B6914}
+
+/* ─── Section titles ────────────────────────────────────────── */
+.section-title{
+  font-size:15px;font-weight:700;color:var(--td);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--grey2)}
+
+/* ─── Stores grid ───────────────────────────────────────────── */
+.stores-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.store-card{
+  background:var(--white);border-radius:var(--radius);padding:18px;
+  box-shadow:var(--shadow);border-bottom:3px solid var(--grey2);
+  transition:.3s;cursor:pointer;
+}
+.store-card:hover{transform:translateY(-2px);border-bottom-color:var(--t)}
+.store-card.top{border-bottom-color:var(--gold)}
+.store-name{font-size:12px;font-weight:700;color:var(--td);margin-bottom:6px}
+.store-val{font-size:22px;font-weight:700;color:var(--dark)}
+.store-label{font-size:10px;color:#999;margin-top:2px}
+.store-bar-bg{height:4px;background:var(--grey2);border-radius:2px;margin-top:10px}
+.store-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--t),var(--tl));transition:1s ease}
+
+/* ─── Progress bar ──────────────────────────────────────────── */
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prog-label{font-size:11px;font-weight:600;color:var(--dark);min-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-bg{flex:1;height:8px;background:var(--grey2);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:1.2s ease}
+.prog-val{font-size:11px;font-weight:700;color:var(--tm);min-width:40px;text-align:right}
+
+/* ─── MP Section ────────────────────────────────────────────── */
+.mp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.mp-fam-card{
+  background:var(--white);border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;
+}
+.mp-icon{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.mp-name{font-size:12px;font-weight:700;color:var(--td)}
+.mp-count{font-size:22px;font-weight:700;color:var(--dark)}
+.mp-label{font-size:10px;color:#999}
+
+/* ─── Tabs ──────────────────────────────────────────────────── */
+.tabs{display:flex;gap:2px;background:var(--grey);border-radius:10px;padding:3px;margin-bottom:22px;width:fit-content}
+.tab{
+  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;
+  cursor:pointer;color:#888;transition:.2s;
+}
+.tab.active{background:var(--white);color:var(--td);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+
+/* ─── Ecommerce ─────────────────────────────────────────────── */
+.product-grid-ecom{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.product-card-ecom{
+  background:var(--white);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:.3s;
+}
+.product-card-ecom:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.13)}
+.pce-img{
+  height:120px;display:flex;align-items:center;justify-content:center;
+  font-size:44px;position:relative;
+}
+.pce-badge{
+  position:absolute;top:8px;right:8px;background:var(--red);color:var(--white);
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;
+}
+.pce-badge.new{background:var(--t)}
+.pce-badge.top{background:var(--gold)}
+.pce-body{padding:14px}
+.pce-name{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.pce-cat{font-size:10px;color:#999;margin-bottom:8px}
+.pce-footer{display:flex;align-items:center;justify-content:space-between}
+.pce-price{font-size:16px;font-weight:700;color:var(--td)}
+.pce-price small{font-size:10px;color:#aaa;font-weight:400}
+.pce-qty{font-size:10px;color:#888}
+.add-btn{
+  background:var(--t);color:var(--white);border:none;
+  width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:.2s;
+}
+.add-btn:hover{background:var(--tm)}
+.cart-count{
+  position:fixed;bottom:32px;right:32px;background:var(--td);color:var(--white);
+  border-radius:50px;padding:14px 22px;font-size:13px;font-weight:700;
+  box-shadow:0 6px 24px rgba(13,64,64,.4);cursor:pointer;transition:.3s;
+  display:flex;align-items:center;gap:8px;z-index:200;
+}
+.cart-count:hover{background:var(--tm);transform:scale(1.04)}
+.cart-bubble{
+  background:var(--gold);color:var(--td);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;
+}
+
+/* ─── Vitrine preview sections ──────────────────────────────── */
+.vitrine-hero{
+  background:linear-gradient(135deg,var(--td) 0%,var(--tm) 100%);
+  border-radius:var(--radius);padding:48px 40px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.vitrine-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:240px;height:240px;border-radius:50%;
+  border:40px solid rgba(90,191,191,.12);
+}
+.vh-tag{display:inline-block;background:var(--gold);color:var(--td);
+  font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.vh-title{font-family:var(--serif);font-size:36px;color:var(--white);line-height:1.2;margin-bottom:10px}
+.vh-sub{font-size:13px;color:var(--tll);margin-bottom:24px}
+.vh-btns{display:flex;gap:12px}
+.btn-gold{background:var(--gold);color:var(--td);border:none;padding:12px 24px;
+  border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-outline{background:transparent;color:var(--tll);border:1px solid rgba(90,191,191,.4);
+  padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-gold:hover{background:var(--gold2)}
+.btn-outline:hover{border-color:var(--tll);color:var(--white)}
+
+/* ─── Summary sidebar right ─────────────────────────────────── */
+.insight-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.insight-item{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  background:var(--grey);border-radius:8px;border-left:3px solid var(--t);
+}
+.insight-ico{font-size:16px;flex-shrink:0;margin-top:1px}
+.insight-text{font-size:11px;color:var(--dark);line-height:1.5}
+.insight-text strong{color:var(--tm)}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media(max-width:1200px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .stores-grid{grid-template-columns:repeat(2,1fr)}
+  .product-grid-ecom{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">La Prunelle</div>
+    <div class="sub">Pâtisserie · Traiteur</div>
+    <div class="badge">Admin Panel</div>
+  </div>
+
+  <div class="nav-section">Tableau de Bord</div>
+  <a class="nav-item active" onclick="showPage('dashboard',this)">
+    <span class="ico">📊</span> Accueil Analytics
+  </a>
+  <a class="nav-item" onclick="showPage('ventes',this)">
+    <span class="ico">🛒</span> Ventes Juillet
+  </a>
+  <a class="nav-item" onclick="showPage('boutiques',this)">
+    <span class="ico">📍</span> Boutiques
+  </a>
+  <a class="nav-item" onclick="showPage('stock',this)">
+    <span class="ico">🧪</span> Matières Premières
+  </a>
+
+  <div class="nav-section">Site Web</div>
+  <a class="nav-item" onclick="showPage('vitrine',this)">
+    <span class="ico">🌐</span> Vitrine Web
+  </a>
+  <a class="nav-item" onclick="showPage('ecommerce',this)">
+    <span class="ico">🍰</span> Boutique E-commerce
+  </a>
+
+  <div class="nav-section">Services Proposés</div>
+  <a class="nav-item" onclick="showPage('services',this)">
+    <span class="ico">💡</span> Plan Transformation
+  </a>
+
+  <div class="sidebar-footer">
+    <p>Données réelles · Juillet 2024<br>Analysées avec Claude AI<br>© Hilal Ridouan Consulting</p>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <h1>La Prunelle <span>/ Dashboard</span></h1>
+    <div class="topbar-right">
+      <div class="badge-live">Données Réelles</div>
+      <div class="date-badge">📅 Juillet 2024 — S1</div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: DASHBOARD ══════════════════════════════════════ -->
+  <section class="page active" id="page-dashboard">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card turq">
+        <div class="kpi-icon turq">💰</div>
+        <div class="kpi-trend up">+S1</div>
+        <div class="kpi-val">149 455 <small>MAD</small></div>
+        <div class="kpi-label">Chiffre d'Affaires — Juillet S1</div>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-icon gold">📦</div>
+        <div class="kpi-trend up">1 678 ud</div>
+        <div class="kpi-val">1 678</div>
+        <div class="kpi-label">Unités Vendues — 7 Boutiques</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-icon green">🏪</div>
+        <div class="kpi-trend up">6/7</div>
+        <div class="kpi-val">6 <small>actives</small></div>
+        <div class="kpi-label">Boutiques avec ventes S1</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-icon red">🍩</div>
+        <div class="kpi-trend up">49 act.</div>
+        <div class="kpi-val">65 <small>réf.</small></div>
+        <div class="kpi-label">Références Produits (49 actives)</div>
+      </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Ventes par Boutique — S1</div>
+            <div class="chart-sub">Quantités vendues · données réelles</div>
+          </div>
+          <div class="chart-badge">Juillet</div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartStores"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">CA par Catégorie</div>
+            <div class="chart-sub">Répartition du chiffre d'affaires</div>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartCats"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Top products -->
+    <div class="section-title">🏆 Top Produits</div>
+    <div class="chart-card" style="margin-bottom:28px">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Classement par Quantités Vendues</div>
+          <div class="chart-sub">15 meilleurs produits — Juillet S1</div>
+        </div>
+      </div>
+      <div id="top-products-bars"></div>
+    </div>
+
+    <!-- Insights -->
+    <div class="section-title">💡 Insights Clés</div>
+    <ul class="insight-list">
+      <li class="insight-item"><span class="insight-ico">📍</span><div class="insight-text"><strong>RABAT</strong> est la 1re boutique (453 unités) suivie de <strong>BOURGOUNE</strong> (423 ud). BOUSKOURA 2 sans ventes S1 — opportunité à activer.</div></li>
+      <li class="insight-item"><span class="insight-ico">🥇</span><div class="insight-text"><strong>BEHLA</strong> est le bestseller absolu (243 unités cumulées) — forte demande de pâtisserie orientale au format familial.</div></li>
+      <li class="insight-item"><span class="insight-ico">💸</span><div class="insight-text">Panier moyen estimé à <strong>89 MAD/unité</strong>. Les plateaux premium (250 MAD) tirent le CA vers le haut — à valoriser en vitrine.</div></li>
+      <li class="insight-item"><span class="insight-ico">📦</span><div class="insight-text"><strong>75 matières premières</strong> dans 21 familles — 12 fruits à coque, 8 chocolats, 8 laitiers. Un outil de gestion de stock digital serait un quick-win.</div></li>
+    </ul>
+  </section>
+
+  <!-- ══ PAGE: VENTES ═════════════════════════════════════════ -->
+  <section class="page" id="page-ventes">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this,'tab-all')">Tous les produits</div>
+      <div class="tab" onclick="switchTab(this,'tab-top')">Top 20</div>
+      <div class="tab" onclick="switchTab(this,'tab-zero')">Hors stock / Inactifs</div>
+    </div>
+
+    <div id="tab-all">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">📋 Détail Ventes — 65 Produits × 7 Boutiques</div>
+          <input class="table-search" id="searchProd" placeholder="🔍 Chercher un produit..." oninput="filterTable()">
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="prodTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Produit</th>
+                <th style="text-align:center">BOUSK.1</th>
+                <th style="text-align:center">BOURG.</th>
+                <th style="text-align:center">2MARS</th>
+                <th style="text-align:center">FORAT</th>
+                <th style="text-align:center">ROUDANI</th>
+                <th style="text-align:center">BOUSK.2</th>
+                <th style="text-align:center">RABAT</th>
+                <th style="text-align:right">TOTAL</th>
+                <th style="text-align:right">PU (MAD)</th>
+                <th style="text-align:right">CA (MAD)</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="prodTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: BOUTIQUES ══════════════════════════════════════ -->
+  <section class="page" id="page-boutiques">
+    <div class="section-title">📍 Performance Boutiques — Juillet S1</div>
+    <div class="stores-grid" id="storesGrid"></div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Comparatif Boutiques</div>
+          <div class="chart-sub">Unités vendues semaine 1</div>
+        </div>
+        <div class="chart-wrap tall"><canvas id="chartStores2"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Part de Marché par Boutique</div>
+          <div class="chart-sub">% des ventes totales</div>
+        </div>
+        <div class="chart-wrap tall"><canvas id="chartPie"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: STOCK / MP ════════════════════════════════════ -->
+  <section class="page" id="page-stock">
+    <div class="section-title">🧪 Familles de Matières Premières</div>
+    <div class="mp-grid" id="mpFamGrid"></div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Répartition par Famille</div>
+          <div class="chart-sub">Nombre de références MP</div>
+        </div>
+        <div class="chart-wrap tall"><canvas id="chartMP"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Top Matières par Valeur</div>
+          <div class="chart-sub">Prix unitaire estimé (MAD/kg)</div>
+        </div>
+        <div id="mp-price-bars" style="padding-top:8px"></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">📋 Liste Complète Matières Premières</div>
+        <input class="table-search" id="searchMP" placeholder="🔍 Chercher..." oninput="filterMP()">
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="mpTable">
+          <thead>
+            <tr><th>Code</th><th>Famille</th><th>Désignation</th><th>Fournisseur</th><th style="text-align:right">Prix U (MAD)</th></tr>
+          </thead>
+          <tbody id="mpTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: VITRINE ═══════════════════════════════════════ -->
+  <section class="page" id="page-vitrine">
+    <div class="section-title">🌐 Aperçu Vitrine Web</div>
+
+    <div class="vitrine-hero">
+      <div class="vh-tag">✦ Pâtisserie · Traiteur · Casablanca</div>
+      <div class="vh-title">L'Art de la<br>Pâtisserie Marocaine</div>
+      <div class="vh-sub">7 boutiques · Casablanca · Livraison à domicile</div>
+      <div class="vh-btns">
+        <button class="btn-gold">Commander en ligne</button>
+        <button class="btn-outline">Voir nos créations</button>
+      </div>
+    </div>
+
+    <!-- Bestsellers preview -->
+    <div class="section-title">🍰 Nos Bestsellers</div>
+    <div class="product-grid-ecom" id="vitrineProducts"></div>
+
+    <!-- Stats band -->
+    <div style="background:var(--td);border-radius:var(--radius);padding:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;margin-bottom:24px">
+      <div><div style="font-size:28px;font-weight:700;color:var(--gold)">44.7K</div><div style="font-size:11px;color:var(--tll)">Abonnés Instagram</div></div>
+      <div><div style="font-size:28px;font-weight:700;color:var(--gold)">7</div><div style="font-size:11px;color:var(--tll)">Boutiques Casablanca</div></div>
+      <div><div style="font-size:28px;font-weight:700;color:var(--gold)">65+</div><div style="font-size:11px;color:var(--tll)">Références Produits</div></div>
+      <div><div style="font-size:28px;font-weight:700;color:var(--gold)">15+</div><div style="font-size:11px;color:var(--tll)">Années de Savoir-Faire</div></div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: E-COMMERCE ════════════════════════════════════ -->
+  <section class="page" id="page-ecommerce">
+    <div class="topbar" style="background:var(--tpal);margin:-28px -32px 28px;padding:14px 32px">
+      <div style="font-size:13px;font-weight:700;color:var(--td)">🍰 Boutique La Prunelle — Commander en ligne</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select style="border:1px solid var(--grey2);border-radius:8px;padding:6px 12px;font-size:11px;font-family:var(--font)" id="catFilter" onchange="filterEcom()">
+          <option value="">Toutes catégories</option>
+          <option value="Plateaux">🎁 Plateaux</option>
+          <option value="Orientale">🍯 Pâtisserie Orientale</option>
+          <option value="Sablés">🍪 Sablés</option>
+          <option value="Fekkas">🥜 Fekkas</option>
+          <option value="Traiteur">🥗 Traiteur</option>
+        </select>
+        <select style="border:1px solid var(--grey2);border-radius:8px;padding:6px 12px;font-size:11px;font-family:var(--font)" id="sortFilter" onchange="filterEcom()">
+          <option value="pop">Plus populaires</option>
+          <option value="price_asc">Prix croissant</option>
+          <option value="price_desc">Prix décroissant</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="product-grid-ecom" id="ecomGrid"></div>
+
+    <!-- Cart button -->
+    <div class="cart-count" id="cartBtn" onclick="showCart()">
+      🛒 Panier
+      <div class="cart-bubble" id="cartBubble">0</div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: SERVICES ══════════════════════════════════════ -->
+  <section class="page" id="page-services">
+    <div class="section-title">💡 Plan de Transformation Digitale</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card turq">
+        <div class="kpi-icon turq">🌐</div>
+        <div class="kpi-val" style="font-size:18px">Site Vitrine</div>
+        <div class="kpi-label">Design premium turquoise/or · Instagram · SEO</div>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-icon gold">🛒</div>
+        <div class="kpi-val" style="font-size:18px">E-commerce</div>
+        <div class="kpi-label">Commandes en ligne · Paiement CMI · Livraison</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-icon green">📊</div>
+        <div class="kpi-val" style="font-size:18px">Dashboard</div>
+        <div class="kpi-label">Ventes temps réel · Stock · 7 boutiques</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-icon red">📱</div>
+        <div class="kpi-val" style="font-size:18px">App Mobile</div>
+        <div class="kpi-label">Fidélité · Notifications · Click & Collect</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">🗓 Roadmap de Déploiement</div>
+          <div class="chart-sub">Planning sur 6 mois</div>
+        </div>
+        <div id="roadmap"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">💰 Investissement & ROI Estimé</div>
+          <div class="chart-sub">Projection sur 12 mois</div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartROI"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────
+const STORES = ['BOUSKOURA 1','BOURGOUNE','2MARS','FORAT','ROUDANI','BOUSKOURA 2','RABAT'];
+const STORE_COLORS = ['#3A9E9E','#1D6F6F','#5BBFBF','#C9A84C','#7ED8D8','#0D4040','#2E6B3A'];
+const STORE_S1 = [138, 423, 31, 360, 273, 0, 453];
+
+const PRODUCTS = [
+  {art:"PLATEAUX BELDI",stores:[2,16,0,10,6,0,11],total:45,pu:240,cat:"Plateaux"},
+  {art:"PLATEAUX BELDI (PT)",stores:[4,10,0,4,8,0,8],total:34,pu:130,cat:"Plateaux"},
+  {art:"PLATEAUX PRESTIGE",stores:[0,10,0,6,6,0,9],total:31,pu:250,cat:"Plateaux"},
+  {art:"PLATEAUX PRESTIGE (PT)",stores:[0,10,0,0,6,0,8],total:24,pu:140,cat:"Plateaux"},
+  {art:"PLATEAUX SABLE",stores:[9,8,0,7,0,0,11],total:35,pu:170,cat:"Plateaux"},
+  {art:"PLATEAUX SABLE (PT)",stores:[5,10,0,6,0,0,8],total:29,pu:100,cat:"Plateaux"},
+  {art:"PLATEAU MACARON",stores:[0,0,0,0,0,0,0],total:0,pu:300,cat:"Plateaux"},
+  {art:"PLATEAU MACARON (PT)",stores:[0,0,0,0,0,0,0],total:0,pu:160,cat:"Plateaux"},
+  {art:"BEHLA",stores:[4,30,0,51,15,0,24],total:124,pu:65,cat:"Orientale"},
+  {art:"BEHLA (PT)",stores:[20,35,4,12,12,0,36],total:119,pu:80,cat:"Orientale"},
+  {art:"BEHLA PISTACH",stores:[0,0,0,0,0,0,0],total:0,pu:100,cat:"Orientale"},
+  {art:"BAHLA NOISETTE (PT)",stores:[0,0,0,0,0,0,0],total:0,pu:100,cat:"Orientale"},
+  {art:"CORNE GAZELLE",stores:[5,0,3,3,6,0,15],total:32,pu:100,cat:"Orientale"},
+  {art:"CORNE GAZELLE (PT)",stores:[7,10,0,9,4,0,23],total:53,pu:120,cat:"Orientale"},
+  {art:"MHANCHA",stores:[5,10,0,17,6,0,26],total:64,pu:95,cat:"Orientale"},
+  {art:"MHANCHA KG",stores:[0,4,0,3,0,0,9],total:16,pu:150,cat:"Orientale"},
+  {art:"GHRIYBA AMANDE",stores:[0,5,2,5,0,0,8],total:20,pu:95,cat:"Orientale"},
+  {art:"GHRIYBA AMANDE (PT)",stores:[0,6,0,4,0,0,8],total:18,pu:115,cat:"Orientale"},
+  {art:"GHRIYBA NOIX",stores:[0,5,0,6,6,0,14],total:31,pu:105,cat:"Orientale"},
+  {art:"GHRIYBA NOIX (PT)",stores:[0,6,2,4,6,0,8],total:26,pu:125,cat:"Orientale"},
+  {art:"BRIWATE RECTANGLE",stores:[0,5,0,5,5,0,8],total:23,pu:110,cat:"Orientale"},
+  {art:"BRIWATE TRIANGLE",stores:[0,5,0,5,5,0,8],total:23,pu:85,cat:"Orientale"},
+  {art:"CHEBAKIYA",stores:[0,10,2,5,0,0,13],total:30,pu:130,cat:"Orientale"},
+  {art:"SELLOU NORMALE",stores:[0,0,0,0,0,0,6],total:6,pu:75,cat:"Orientale"},
+  {art:"SABLE PRALINE",stores:[0,8,0,6,0,0,10],total:24,pu:80,cat:"Sablés"},
+  {art:"SABLE PRALINE (PT)",stores:[0,8,0,8,0,0,10],total:26,pu:70,cat:"Sablés"},
+  {art:"SABLE CONFITURE",stores:[10,20,0,18,10,0,35],total:93,pu:80,cat:"Sablés"},
+  {art:"SABLE CONFITURE (PT)",stores:[8,20,0,16,10,0,35],total:89,pu:65,cat:"Sablés"},
+  {art:"SALE SUCRE",stores:[5,15,3,12,8,0,21],total:64,pu:70,cat:"Sablés"},
+  {art:"SABLE NOIX",stores:[0,5,0,3,0,0,8],total:16,pu:70,cat:"Sablés"},
+  {art:"SABLE NOIX CHOCOLAT",stores:[0,6,0,5,0,0,9],total:20,pu:80,cat:"Sablés"},
+  {art:"SABLE NOISETTE CHOC.",stores:[0,3,0,3,0,0,4],total:10,pu:80,cat:"Sablés"},
+  {art:"SABLE PEPITE CHOC.",stores:[0,5,0,5,0,0,8],total:18,pu:85,cat:"Sablés"},
+  {art:"SABLE DATTE",stores:[0,4,0,3,0,0,7],total:14,pu:65,cat:"Sablés"},
+  {art:"SABLE MARCHEM",stores:[5,12,0,10,8,0,15],total:50,pu:65,cat:"Sablés"},
+  {art:"FEKKAS AMANDE",stores:[10,25,0,20,12,0,34],total:101,pu:80,cat:"Fekkas"},
+  {art:"FEKKAS AMANDE (PT)",stores:[5,12,0,10,8,0,17],total:52,pu:70,cat:"Fekkas"},
+  {art:"FEKKAS NOIX",stores:[5,12,0,10,5,0,16],total:48,pu:95,cat:"Fekkas"},
+  {art:"FEKKAS NOIX (PT)",stores:[3,6,0,5,3,0,8],total:25,pu:80,cat:"Fekkas"},
+  {art:"FEKKAS CREME FRAICHE",stores:[3,8,0,6,4,0,12],total:33,pu:30,cat:"Fekkas"},
+  {art:"CREVETTE VERMICELLE",stores:[2,4,0,2,2,0,4],total:14,pu:100,cat:"Traiteur"},
+  {art:"POULET CREVETTE",stores:[0,1,0,0,1,0,1],total:3,pu:100,cat:"Traiteur"},
+  {art:"POULET FROMAGE",stores:[2,4,0,3,2,0,5],total:16,pu:90,cat:"Traiteur"},
+  {art:"THON",stores:[0,1,0,1,1,0,1],total:4,pu:90,cat:"Traiteur"},
+  {art:"PASTIES POULET",stores:[1,2,0,2,2,0,4],total:11,pu:220,cat:"Traiteur"},
+  {art:"PASTIES FRUITS MER",stores:[2,4,0,3,2,0,6],total:17,pu:200,cat:"Traiteur"},
+  {art:"RICHBANDS",stores:[4,8,0,7,5,0,10],total:34,pu:95,cat:"Autres"},
+  {art:"MACARON BELDI",stores:[6,12,0,8,6,0,18],total:50,pu:80,cat:"Autres"},
+  {art:"POCHE AMANDE",stores:[2,4,0,2,2,0,4],total:14,pu:60,cat:"Autres"},
+  {art:"CARRE NOGA",stores:[3,7,0,5,4,0,9],total:28,pu:70,cat:"Autres"}
+];
+
+const MP_FAMILLES = {
+  "FRUIT À COQUE":{count:12,ico:"🥜",color:"#4A235A"},
+  "CHOCOLAT":{count:8,ico:"🍫",color:"#3D1308"},
+  "LAITIER":{count:8,ico:"🥛",color:"#2E6B3A"},
+  "AROMES":{count:5,ico:"🌸",color:"#7D3C98"},
+  "SUCRE":{count:4,ico:"🍬",color:"#8B5E3C"},
+  "HYGIENE":{count:3,ico:"🧼",color:"#555555"},
+  "OVOPRODUITS":{count:2,ico:"🥚",color:"#B7770D"},
+  "GRAINES":{count:2,ico:"🌿",color:"#1A5276"},
+  "HUILE":{count:2,ico:"🫙",color:"#2E6B3A"},
+  "VERMICELLE":{count:2,ico:"🍜",color:"#B7770D"}
+};
+
+const MP_DATA = [
+  {code:"FA02",fam:"FRUIT À COQUE",desig:"Amande RIFI",frs:"ABDELALI",prix:75},
+  {code:"FA03",fam:"FRUIT À COQUE",desig:"Amande effilée",frs:"LHAJ YOUNESS",prix:82},
+  {code:"FA26",fam:"FRUIT À COQUE",desig:"Pistache",frs:"ABDELALI",prix:210},
+  {code:"FA27",fam:"FRUIT À COQUE",desig:"Noisette",frs:"ABDELALI",prix:88},
+  {code:"FA25",fam:"FRUIT À COQUE",desig:"Acajou",frs:"ABDELALI",prix:110},
+  {code:"CH32",fam:"CHOCOLAT",desig:"Chocovic blanc",frs:"CANAL FOOD",prix:56.67},
+  {code:"CH33",fam:"CHOCOLAT",desig:"Chocovic lait",frs:"CANAL FOOD",prix:56.67},
+  {code:"CH34",fam:"CHOCOLAT",desig:"Chocovic Noir",frs:"CANAL FOOD",prix:53.33},
+  {code:"LB01",fam:"LAITIER",desig:"Beurre IRICH",frs:"LACTO GROUPE",prix:68.42},
+  {code:"LC06",fam:"LAITIER",desig:"Crème délice",frs:"CANILIA",prix:50},
+  {code:"LC07",fam:"LAITIER",desig:"Crème plus",frs:"CANILIA",prix:100},
+  {code:"LF10",fam:"LAITIER",desig:"Fromage Kiri",frs:"BAKRIM",prix:97},
+  {code:"LF11",fam:"LAITIER",desig:"Fromage rouge",frs:"BAKRIM",prix:82},
+  {code:"AR41",fam:"AROMES",desig:"Poudre Vanille",frs:"CANAL FOOD",prix:140},
+  {code:"SS01",fam:"SUCRE",desig:"Sucre granulé",frs:"AMELNE",prix:7.66},
+  {code:"SS02",fam:"SUCRE",desig:"Sucre glace",frs:"AMELNE",prix:7.94},
+  {code:"SM04",fam:"SUCRE",desig:"Miel",frs:"VICTUS",prix:315},
+  {code:"GL38",fam:"GLACAGE",desig:"Nappage",frs:"CANAL FOOD",prix:30.83},
+  {code:"SI39",fam:"SIROP",desig:"Glucose",frs:"CANAL FOOD",prix:55.83},
+  {code:"OV01",fam:"OVOPRODUITS",desig:"Œufs",frs:"KERCH",prix:0.83},
+  {code:"HU48",fam:"HUILE",desig:"Huile Olive",frs:"LOCAL",prix:49},
+  {code:"HU49",fam:"HUILE",desig:"Huile Table",frs:"LOCAL",prix:21},
+  {code:"GR28",fam:"GRAINES",desig:"Sésame",frs:"LOCAL",prix:29},
+  {code:"GR29",fam:"GRAINES",desig:"Fenouil",frs:"LOCAL",prix:110},
+];
+
+// ─── NAVIGATION ────────────────────────────────────────────────
+function showPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  // Update topbar title
+  const titles = {
+    dashboard:'Dashboard / Accueil',ventes:'Ventes Juillet',
+    boutiques:'Boutiques',stock:'Matières Premières',
+    vitrine:'Vitrine Web',ecommerce:'E-commerce',services:'Services'
+  };
+  document.querySelector('.topbar h1').innerHTML = `La Prunelle <span>/ ${titles[id]||id}</span>`;
+}
+
+function switchTab(el, tabId){
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ─── CHARTS ────────────────────────────────────────────────────
+const C = {
+  td:'#0D4040',tm:'#1D6F6F',t:'#3A9E9E',tl:'#5BBFBF',tll:'#7ED8D8',
+  gold:'#C9A84C',red:'#E74C3C',green:'#27AE60',grey:'#E8ECEF'
+};
+
+Chart.defaults.font.family = "'Montserrat', sans-serif";
+Chart.defaults.font.size = 11;
+
+// Stores bar
+new Chart(document.getElementById('chartStores'),{
+  type:'bar',
+  data:{
+    labels:STORES.map(s=>s.replace(' ','\\n')),
+    datasets:[{
+      label:'Unités S1',
+      data:STORE_S1,
+      backgroundColor:STORE_S1.map(v=>v===Math.max(...STORE_S1)?C.gold:C.t),
+      borderRadius:6,
+      borderSkipped:false,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>`${c.parsed.y} unités`}}},
+    scales:{
+      x:{grid:{display:false},ticks:{maxRotation:30}},
+      y:{grid:{color:'#F0F0F0'},ticks:{callback:v=>v+' ud'}}
+    }
+  }
+});
+
+// Category pie
+const catData = [
+  {l:'Pât. Orientale',v:41295,c:'#1D6F6F'},
+  {l:'Sablés',v:30715,c:'#3A9E9E'},
+  {l:'Fekkas',v:22190,c:'#5BBFBF'},
+  {l:'Plateaux',v:33630,c:'#C9A84C'},
+  {l:'Traiteur',v:9820,c:'#8B5E3C'},
+  {l:'Autres',v:11805,c:'#7D3C98'},
+];
+new Chart(document.getElementById('chartCats'),{
+  type:'doughnut',
+  data:{
+    labels:catData.map(d=>d.l),
+    datasets:[{data:catData.map(d=>d.v),backgroundColor:catData.map(d=>d.c),
+      borderWidth:3,borderColor:'#fff',hoverOffset:6}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'62%',
+    plugins:{legend:{position:'bottom',labels:{padding:10,font:{size:10}}},
+      tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed.toLocaleString('fr')} MAD`}}}
+  }
+});
+
+// Top products bars
+const topProds = [...PRODUCTS].filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,15);
+const maxQty = topProds[0].total;
+const barsEl = document.getElementById('top-products-bars');
+topProds.forEach((p,i)=>{
+  const pct = (p.total/maxQty*100).toFixed(0);
+  const colors = ['#C9A84C','#3A9E9E','#1D6F6F','#5BBFBF','#7ED8D8'];
+  const c = colors[Math.min(i,colors.length-1)];
+  barsEl.innerHTML += `
+    <div class="prog-row">
+      <div class="prog-label" title="${p.art}">${p.art}</div>
+      <div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div>
+      <div class="prog-val">${p.total}</div>
+    </div>`;
+});
+
+// ─── STORES PAGE ────────────────────────────────────────────────
+const storesGrid = document.getElementById('storesGrid');
+const maxStore = Math.max(...STORE_S1);
+STORES.forEach((s,i)=>{
+  const isTop = STORE_S1[i] === maxStore;
+  const pct = STORE_S1[i]/maxStore*100;
+  storesGrid.innerHTML += `
+    <div class="store-card ${isTop?'top':''}">
+      <div class="store-name">${isTop?'🥇 ':''} ${s}</div>
+      <div class="store-val">${STORE_S1[i].toLocaleString('fr')}</div>
+      <div class="store-label">unités · S1 Juillet</div>
+      <div class="store-bar-bg"><div class="store-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+});
+
+// Store bar chart 2
+new Chart(document.getElementById('chartStores2'),{
+  type:'bar',
+  data:{
+    labels:STORES,
+    datasets:[{label:'Unités S1',data:STORE_S1,
+      backgroundColor:STORES.map((_,i)=>STORE_COLORS[i]),
+      borderRadius:8,borderSkipped:false}]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'#F0F0F0'}},y:{grid:{display:false}}}
+  }
+});
+
+// Pie chart boutiques
+new Chart(document.getElementById('chartPie'),{
+  type:'pie',
+  data:{
+    labels:STORES,
+    datasets:[{data:STORE_S1,backgroundColor:STORE_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{padding:8,font:{size:10}}},
+      tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} ud (${(c.parsed/1678*100).toFixed(1)}%)`}}}
+  }
+});
+
+// ─── STOCK PAGE ────────────────────────────────────────────────
+const mpGrid = document.getElementById('mpFamGrid');
+Object.entries(MP_FAMILLES).forEach(([fam,d])=>{
+  mpGrid.innerHTML += `
+    <div class="mp-fam-card">
+      <div class="mp-icon" style="background:${d.color}22">${d.ico}</div>
+      <div>
+        <div class="mp-name">${fam}</div>
+        <div class="mp-count">${d.count}</div>
+        <div class="mp-label">références</div>
+      </div>
+    </div>`;
+});
+
+new Chart(document.getElementById('chartMP'),{
+  type:'polarArea',
+  data:{
+    labels:Object.keys(MP_FAMILLES),
+    datasets:[{data:Object.values(MP_FAMILLES).map(d=>d.count),
+      backgroundColor:Object.values(MP_FAMILLES).map(d=>d.color+'CC'),
+      borderColor:'#fff',borderWidth:2}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'right',labels:{font:{size:9},padding:6}}}
+  }
+});
+
+// MP price bars
+const mpBars = document.getElementById('mp-price-bars');
+const mpSorted = MP_DATA.filter(m=>m.prix>0).sort((a,b)=>b.prix-a.prix).slice(0,12);
+const maxPrix = mpSorted[0].prix;
+mpSorted.forEach(m=>{
+  const pct = (m.prix/maxPrix*100).toFixed(0);
+  const colors = [C.gold,C.td,C.tm,C.t];
+  const c = m.prix>=100?C.gold:m.prix>=50?C.tm:C.t;
+  mpBars.innerHTML += `
+    <div class="prog-row">
+      <div class="prog-label">${m.desig}</div>
+      <div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div>
+      <div class="prog-val">${m.prix} MAD</div>
+    </div>`;
+});
+
+// ─── PRODUCTS TABLE ─────────────────────────────────────────────
+function buildProductTable(){
+  const tbody = document.getElementById('prodTableBody');
+  let html = '';
+  PRODUCTS.forEach((p,i)=>{
+    const ca = p.total*p.pu;
+    const statut = p.total===0 ? '<span class="pill pill-red">Inactif</span>'
+      : p.total>50 ? '<span class="pill pill-gold">⭐ Top</span>'
+      : '<span class="pill pill-green">Actif</span>';
+    const rankN = i<3 ? `<span class="rank-badge rank-${i+1}">${i+1}</span>` : `<span class="rank-badge rank-n">${i+1}</span>`;
+    const stCells = p.stores.map(v=>
+      `<td style="text-align:center;color:${v>10?'#1D6F6F':v>0?'#333':'#ccc'};font-weight:${v>10?'700':'400'}">${v||'—'}</td>`
+    ).join('');
+    html += `<tr>
+      <td>${rankN}</td>
+      <td style="font-weight:600">${p.art}</td>
+      ${stCells}
+      <td class="num">${p.total||'—'}</td>
+      <td class="num">${p.pu||'—'}</td>
+      <td class="ca">${ca?ca.toLocaleString('fr'):'-'}</td>
+      <td>${statut}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+buildProductTable();
+
+function filterTable(){
+  const q = document.getElementById('searchProd').value.toLowerCase();
+  document.querySelectorAll('#prodTableBody tr').forEach(tr=>{
+    tr.style.display = tr.cells[1].textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+// ─── MP TABLE ───────────────────────────────────────────────────
+function buildMPTable(){
+  const tbody = document.getElementById('mpTableBody');
+  let html = '';
+  let prevFam = '';
+  MP_DATA.forEach(m=>{
+    if(m.fam !== prevFam){
+      html += `<tr><td colspan="5" style="background:#0D4040;color:#7ED8D8;font-weight:700;font-size:10px;letter-spacing:1px;padding:8px 14px">▶ ${m.fam}</td></tr>`;
+      prevFam = m.fam;
+    }
+    html += `<tr>
+      <td style="font-family:monospace;color:#888;font-size:10px">${m.code}</td>
+      <td><span class="pill pill-grey">${m.fam}</span></td>
+      <td style="font-weight:600">${m.desig}</td>
+      <td style="color:#888">${m.frs}</td>
+      <td class="num">${m.prix?m.prix.toLocaleString('fr')+' MAD':'—'}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+buildMPTable();
+
+function filterMP(){
+  const q = document.getElementById('searchMP').value.toLowerCase();
+  document.querySelectorAll('#mpTableBody tr').forEach(tr=>{
+    if(tr.cells.length === 1) return; // separator
+    tr.style.display = tr.cells[2].textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+// ─── VITRINE PRODUCTS ───────────────────────────────────────────
+const EMOJIS = {Plateaux:'🎁',Orientale:'🍯',Sablés:'🍪',Fekkas:'🥜',Traiteur:'🥗',Autres:'🍬'};
+const BG_GRAD = {
+  Plateaux:'linear-gradient(135deg,#1D6F6F,#3A9E9E)',
+  Orientale:'linear-gradient(135deg,#2E4057,#4A235A)',
+  Sablés:'linear-gradient(135deg,#2E6B3A,#3A9E9E)',
+  Fekkas:'linear-gradient(135deg,#8B5E3C,#C9A84C)',
+  Traiteur:'linear-gradient(135deg,#B7770D,#C9A84C)',
+  Autres:'linear-gradient(135deg,#3A9E9E,#1D6F6F)',
+};
+
+const bestSellers = PRODUCTS.filter(p=>p.total>30).sort((a,b)=>b.total-a.total).slice(0,8);
+const vitrineEl = document.getElementById('vitrineProducts');
+bestSellers.forEach((p,i)=>{
+  const badges = p.total>100?'<span class="pce-badge top">⭐ Top</span>':'';
+  vitrineEl.innerHTML += `
+    <div class="product-card-ecom">
+      <div class="pce-img" style="background:${BG_GRAD[p.cat]||'linear-gradient(135deg,#3A9E9E,#1D6F6F)'}">
+        <span>${EMOJIS[p.cat]||'🍰'}</span>
+        ${badges}
+      </div>
+      <div class="pce-body">
+        <div class="pce-name">${p.art}</div>
+        <div class="pce-cat">${p.cat}</div>
+        <div class="pce-footer">
+          <div class="pce-price">${p.pu} <small>MAD</small></div>
+          <button class="add-btn" onclick="addToCart()">+</button>
+        </div>
+      </div>
+    </div>`;
+});
+
+// ─── E-COMMERCE ─────────────────────────────────────────────────
+let cartCount = 0;
+function addToCart(){
+  cartCount++;
+  document.getElementById('cartBubble').textContent = cartCount;
+  document.getElementById('cartBtn').style.background = cartCount>0?'var(--tm)':'var(--td)';
+}
+function showCart(){
+  alert(`🛒 Panier La Prunelle\n${cartCount} article(s) sélectionné(s)\n\nEn production : intégration paiement CMI Maroc + confirmation SMS`);
+}
+
+let allEcomProducts = [...PRODUCTS].filter(p=>p.pu>0);
+function buildEcom(products){
+  const grid = document.getElementById('ecomGrid');
+  grid.innerHTML = '';
+  products.forEach(p=>{
+    const badge = p.total>80?'<span class="pce-badge top">Bestseller</span>':
+                  p.total===0?'<span class="pce-badge">Rupture</span>':'';
+    grid.innerHTML += `
+      <div class="product-card-ecom">
+        <div class="pce-img" style="background:${BG_GRAD[p.cat]||'linear-gradient(135deg,#3A9E9E,#1D6F6F)'}">
+          <span>${EMOJIS[p.cat]||'🍰'}</span>${badge}
+        </div>
+        <div class="pce-body">
+          <div class="pce-name">${p.art}</div>
+          <div class="pce-cat">${p.cat}</div>
+          <div class="pce-footer">
+            <div>
+              <div class="pce-price">${p.pu} <small>MAD</small></div>
+              <div class="pce-qty">${p.total>0?`${p.total} vendus S1`:'Sur commande'}</div>
+            </div>
+            <button class="add-btn" onclick="addToCart()" ${p.total===0?'style="background:#ccc;cursor:not-allowed"':''}>
+              ${p.total===0?'✕':'+'}
+            </button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+buildEcom(allEcomProducts);
+
+function filterEcom(){
+  let prods = [...PRODUCTS].filter(p=>p.pu>0);
+  const cat = document.getElementById('catFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+  if(cat) prods = prods.filter(p=>p.cat===cat);
+  if(sort==='price_asc') prods.sort((a,b)=>a.pu-b.pu);
+  else if(sort==='price_desc') prods.sort((a,b)=>b.pu-a.pu);
+  else prods.sort((a,b)=>b.total-a.total);
+  buildEcom(prods);
+}
+
+// ─── SERVICES / ROADMAP ─────────────────────────────────────────
+const roadmapEl = document.getElementById('roadmap');
+const phases = [
+  {phase:'M1-2',label:'Site Vitrine',desc:'Design, dev, SEO, Instagram',color:'#3A9E9E',pct:100},
+  {phase:'M2-3',label:'E-commerce',desc:'Catalogue, panier, paiement CMI',color:'#1D6F6F',pct:80},
+  {phase:'M3-4',label:'Dashboard',desc:'Analytics ventes, stock, 7 boutiques',color:'#C9A84C',pct:60},
+  {phase:'M4-5',label:'Automatisation',desc:'Emails, WhatsApp, relances',color:'#8B5E3C',pct:40},
+  {phase:'M5-6',label:'App Mobile',desc:'Fidélité, click & collect, notifs',color:'#4A235A',pct:20},
+];
+phases.forEach(ph=>{
+  roadmapEl.innerHTML += `
+    <div class="prog-row" style="margin-bottom:14px">
+      <div style="min-width:90px">
+        <div style="font-size:10px;font-weight:700;color:${ph.color}">${ph.phase}</div>
+        <div style="font-size:11px;font-weight:700;color:#333">${ph.label}</div>
+        <div style="font-size:9px;color:#999">${ph.desc}</div>
+      </div>
+      <div class="prog-bg" style="height:10px">
+        <div class="prog-fill" style="width:${ph.pct}%;background:${ph.color}"></div>
+      </div>
+    </div>`;
+});
+
+new Chart(document.getElementById('chartROI'),{
+  type:'line',
+  data:{
+    labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],
+    datasets:[
+      {label:'CA Actuel',data:[149,145,152,148,155,150,158,153,160,156,162,165],
+        borderColor:'#888',fill:false,borderDash:[5,5],tension:.4,pointRadius:3},
+      {label:'CA Avec Digital',data:[149,165,188,210,235,260,288,315,340,370,395,425],
+        borderColor:'#C9A84C',fill:true,
+        backgroundColor:'rgba(201,168,76,.1)',tension:.4,
+        borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#C9A84C'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom'},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y}K MAD`}}},
+    scales:{
+      x:{grid:{display:false}},
+      y:{grid:{color:'#F0F0F0'},ticks:{callback:v=>v+'K'}}
+    }
+  }
+});
+</script>
+</body>
+</html>

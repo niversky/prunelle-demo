@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Prunelle Pâtisserie — Casablanca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════ RESET & VARIABLES ═══════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --ivoire:   #F7F2EA;
+  --ivoire2:  #EFE8D8;
+  --brun:     #2C1A0E;
+  --brun2:    #3D2314;
+  --or:       #B8963E;
+  --or2:      #D4AF5A;
+  --or-light: #F0E0B0;
+  --rose:     #C4A09A;
+  --vert:     #7EC8C8;
+  --vert2:    #5AAFAF;
+  --vert-light: rgba(126,200,200,.12);
+  --texte:    #2C1A0E;
+  --gris:     #7A7067;
+  --blanc:    #FFFFFF;
+  --serif:    'Playfair Display', Georgia, serif;
+  --cond:     'Cormorant Garamond', Georgia, serif;
+  --sans:     'Montserrat', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family:var(--sans); background:var(--blanc); color:var(--texte); overflow-x:hidden; }
+
+/* ═══════ ANNONCE BARRE ═══════ */
+.announce-bar {
+  background:var(--brun); color:rgba(255,255,255,.82);
+  text-align:center; padding:9px 20px; font-size:11.5px; letter-spacing:2px;
+  text-transform:uppercase; font-family:var(--sans); font-weight:300;
+}
+.announce-bar span { color:var(--or2); font-weight:500; }
+
+/* ═══════ NAVIGATION ═══════ */
+.nav {
+  position:sticky; top:0; z-index:999; background:rgba(247,242,234,0.97);
+  backdrop-filter:blur(12px); border-bottom:1px solid rgba(44,26,14,.08);
+  padding:0 60px; height:72px; display:flex; align-items:center;
+  justify-content:space-between; transition:all .3s;
+}
+.nav.scrolled { height:60px; background:rgba(247,242,234,0.99); box-shadow:0 1px 20px rgba(0,0,0,.06); }
+.nav-left { display:flex; gap:32px; align-items:center; }
+.nav-left a {
+  font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:2px; text-transform:uppercase; color:var(--texte);
+  text-decoration:none; transition:color .2s; position:relative;
+}
+.nav-left a::after {
+  content:''; position:absolute; bottom:-2px; left:0; right:0; height:1px;
+  background:var(--or); transform:scaleX(0); transition:transform .3s;
+}
+.nav-left a:hover { color:var(--or); }
+.nav-left a:hover::after { transform:scaleX(1); }
+.nav-logo {
+  text-align:center; cursor:pointer;
+}
+.nav-logo .logo-mark {
+  width:46px; height:46px; border-radius:50%; background:var(--brun);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 3px;
+}
+.nav-logo .logo-mark span { color:var(--or); font-family:var(--serif); font-size:18px; font-weight:700; }
+.nav-logo .logo-name { font-family:var(--serif); font-size:11px; letter-spacing:3px; color:var(--brun); text-transform:uppercase; }
+.nav-right { display:flex; gap:22px; align-items:center; }
+.nav-right a { font-family:var(--sans); font-size:11px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:var(--texte); text-decoration:none; transition:color .2s; }
+.nav-right a:hover { color:var(--or); }
+.nav-icon { font-size:18px; cursor:pointer; color:var(--brun); transition:color .2s; }
+.nav-icon:hover { color:var(--or); }
+
+/* ═══════ HERO ═══════ */
+.hero {
+  position:relative; height:100vh; min-height:680px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; background:var(--brun);
+}
+/* Fond artistique simulé avec dégradés */
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(184,150,62,.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(196,160,154,.12) 0%, transparent 45%),
+    linear-gradient(165deg, #1a0d06 0%, #2C1A0E 35%, #3d2314 60%, #1a0d06 100%);
+}
+/* Motif arabesque subtil */
+.hero-pattern {
+  position:absolute; inset:0; opacity:.04;
+  background-image: repeating-linear-gradient(45deg, var(--or) 0px, var(--or) 1px, transparent 1px, transparent 20px),
+                    repeating-linear-gradient(-45deg, var(--or) 0px, var(--or) 1px, transparent 1px, transparent 20px);
+}
+/* Cercle décoratif doré — avec accent vert */
+.hero-circle {
+  position:absolute; right:8%; top:50%; transform:translateY(-50%);
+  width:420px; height:420px; border-radius:50%;
+  border:1px solid rgba(184,150,62,.25);
+  display:flex; align-items:center; justify-content:center;
+}
+.hero-circle::before {
+  content:''; position:absolute; width:360px; height:360px;
+  border-radius:50%; border:1px solid rgba(126,200,200,.18);
+}
+/* Arc vert décoratif dans le hero */
+.hero-circle::after {
+  content:''; position:absolute; width:300px; height:300px;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:rgba(126,200,200,.35);
+  border-right-color:rgba(126,200,200,.2);
+  animation:spin-slow 12s linear infinite;
+}
+@keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.hero-circle-inner {
+  width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(184,150,62,.12) 0%, transparent 70%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:120px; filter:drop-shadow(0 0 30px rgba(184,150,62,.3));
+}
+.hero-content {
+  position:relative; z-index:2; text-align:center; max-width:750px; padding:0 40px;
+}
+.hero-eyebrow {
+  font-family:var(--sans); font-size:10px; letter-spacing:5px; text-transform:uppercase;
+  color:var(--or2); margin-bottom:24px; display:flex; align-items:center; justify-content:center; gap:16px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content:''; width:40px; height:1px; background:var(--or2); opacity:.6;
+}
+.hero h1 {
+  font-family:var(--serif); font-size:72px; font-weight:400; line-height:1.05;
+  color:var(--blanc); margin-bottom:14px; letter-spacing:-1px;
+}
+.hero h1 em { font-style:italic; color:var(--or2); }
+.hero-sub {
+  font-family:var(--cond); font-size:20px; color:rgba(255,255,255,.6);
+  font-weight:300; margin-bottom:40px; letter-spacing:.5px; line-height:1.5;
+}
+.hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-outline-gold {
+  border:1px solid var(--or2); color:var(--or2); background:transparent;
+  padding:14px 36px; font-family:var(--sans); font-size:11px;
+  letter-spacing:2.5px; text-transform:uppercase; cursor:pointer;
+  transition:all .3s; font-weight:500;
+}
+.btn-outline-gold:hover { background:var(--or2); color:var(--brun); }
+.btn-filled-light {
+  border:1px solid rgba(255,255,255,.3); color:rgba(255,255,255,.8); background:transparent;
+  padding:14px 36px; font-family:var(--sans); font-size:11px;
+  letter-spacing:2.5px; text-transform:uppercase; cursor:pointer;
+  transition:all .3s; font-weight:400;
+}
+.btn-filled-light:hover { background:rgba(255,255,255,.1); }
+.hero-scroll {
+  position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:rgba(255,255,255,.4); font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  font-family:var(--sans); animation:bounce 2s infinite;
+}
+.hero-scroll::after {
+  content:''; width:1px; height:40px; background:rgba(255,255,255,.2);
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+/* ═══════ BANDE MAGASINS ═══════ */
+.stores-band {
+  background:var(--brun2); border-top:2px solid var(--or);
+  padding:0; overflow:hidden;
+}
+.stores-inner {
+  display:flex; animation:scroll-stores 30s linear infinite;
+  width:max-content;
+}
+.stores-inner:hover { animation-play-state:paused; }
+.store-item {
+  display:flex; align-items:center; gap:12px; padding:16px 40px;
+  border-right:1px solid rgba(184,150,62,.2); white-space:nowrap; cursor:pointer;
+  transition:background .2s;
+}
+.store-item:hover { background:rgba(184,150,62,.08); }
+.store-dot { width:6px; height:6px; border-radius:50%; background:var(--or); }
+.store-name { font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--or2); }
+.store-tel { font-size:11px; color:rgba(255,255,255,.45); font-family:var(--sans); }
+@keyframes scroll-stores { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ═══════ SECTION GÉNÉRIQUE ═══════ */
+section { padding:100px 80px; }
+.section-eyebrow {
+  font-family:var(--sans); font-size:9.5px; letter-spacing:4px; text-transform:uppercase;
+  color:var(--or); margin-bottom:14px; display:flex; align-items:center; gap:14px;
+}
+.section-eyebrow::before { content:''; width:30px; height:1px; background:var(--or); }
+.section-title {
+  font-family:var(--serif); font-size:42px; font-weight:400; color:var(--brun);
+  line-height:1.2; margin-bottom:16px;
+}
+.section-title em { font-style:italic; color:var(--or); }
+.section-sub {
+  font-family:var(--cond); font-size:17px; color:var(--gris); font-weight:300;
+  max-width:560px; line-height:1.7; margin-bottom:48px;
+}
+.or-divider {
+  width:50px; height:1px; background:var(--or); margin:20px 0 40px;
+}
+
+/* ═══════ SECTION CRÉATIONS ═══════ */
+.creations { background:var(--ivoire); }
+.creations-header { text-align:center; }
+.creations-header .section-eyebrow { justify-content:center; }
+.creations-header .section-eyebrow::before { display:none; }
+.creations-header .section-sub { margin:0 auto 52px; text-align:center; }
+
+/* Grille éditoriale style Ladurée */
+.creations-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+}
+.creat-card {
+  position:relative; overflow:hidden; cursor:pointer; background:var(--blanc);
+  border:1px solid rgba(44,26,14,.06);
+  transition:all .4s;
+}
+.creat-card:hover { z-index:2; transform:scale(1.02); box-shadow:0 20px 60px rgba(44,26,14,.12); }
+.creat-img {
+  height:320px; display:flex; align-items:center; justify-content:center;
+  font-size:90px; transition:transform .5s;
+  position:relative; overflow:hidden;
+}
+.creat-card:hover .creat-img { transform:scale(1.04); }
+.creat-overlay {
+  position:absolute; inset:0; background:linear-gradient(transparent 60%, rgba(44,26,14,.7));
+  opacity:0; transition:opacity .3s;
+}
+.creat-card:hover .creat-overlay { opacity:1; }
+.creat-add-btn {
+  position:absolute; bottom:16px; left:50%; transform:translateX(-50%) translateY(10px);
+  background:var(--or); color:var(--brun); border:none; padding:8px 22px;
+  font-family:var(--sans); font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; opacity:0; transition:all .3s; font-weight:600; white-space:nowrap;
+}
+.creat-card:hover .creat-add-btn { opacity:1; transform:translateX(-50%) translateY(0); }
+.creat-body { padding:20px 22px 24px; border-top:1px solid rgba(44,26,14,.05); }
+.creat-badge {
+  font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--or);
+  font-family:var(--sans); font-weight:600; margin-bottom:7px;
+}
+.creat-name { font-family:var(--serif); font-size:17px; color:var(--brun); margin-bottom:5px; font-weight:500; }
+.creat-desc { font-family:var(--cond); font-size:13px; color:var(--gris); line-height:1.5; margin-bottom:12px; font-style:italic; }
+.creat-foot { display:flex; justify-content:space-between; align-items:center; }
+.creat-price { font-family:var(--serif); font-size:18px; color:var(--brun); font-weight:600; }
+.creat-mag { font-size:9px; letter-spacing:1px; color:var(--or); text-transform:uppercase; font-family:var(--sans); }
+
+/* Catégories inline style Ladurée */
+.cat-tabs {
+  display:flex; justify-content:center; gap:0; margin-bottom:48px;
+  border-bottom:1px solid rgba(44,26,14,.1);
+}
+.cat-tab {
+  padding:12px 28px; font-family:var(--sans); font-size:10px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gris); cursor:pointer; border-bottom:2px solid transparent;
+  margin-bottom:-1px; transition:all .2s; background:none; border-left:none; border-right:none; border-top:none;
+}
+.cat-tab:hover { color:var(--brun); }
+.cat-tab.on { color:var(--brun); border-bottom-color:var(--brun); font-weight:600; }
+
+/* ═══════ SECTION SAVOIR-FAIRE (style storytelling) ═══════ */
+.savoir-faire { background:var(--blanc); padding:0; }
+.sf-inner { display:grid; grid-template-columns:1fr 1fr; min-height:560px; }
+.sf-visual {
+  background:linear-gradient(135deg, var(--brun) 0%, #5c3317 100%);
+  display:flex; align-items:center; justify-content:center; font-size:160px;
+  position:relative; overflow:hidden;
+}
+.sf-visual::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 40% 60%, rgba(184,150,62,.2) 0%, transparent 60%);
+}
+.sf-visual-pattern {
+  position:absolute; inset:0; opacity:.05;
+  background-image:repeating-linear-gradient(0deg, var(--or) 0px, var(--or) 1px, transparent 1px, transparent 30px),
+                   repeating-linear-gradient(90deg, var(--or) 0px, var(--or) 1px, transparent 1px, transparent 30px);
+}
+.sf-text { padding:80px 80px; display:flex; flex-direction:column; justify-content:center; background:var(--ivoire); }
+.sf-year { font-family:var(--serif); font-size:100px; color:var(--or-light); font-weight:900; line-height:1; margin-bottom:-20px; }
+.sf-title { font-family:var(--serif); font-size:38px; font-weight:400; color:var(--brun); margin-bottom:20px; line-height:1.2; }
+.sf-title em { font-style:italic; color:var(--or); }
+.sf-body { font-family:var(--cond); font-size:16px; color:var(--gris); line-height:1.8; font-weight:300; margin-bottom:32px; }
+.sf-stats { display:flex; gap:40px; }
+.sf-stat .n { font-family:var(--serif); font-size:32px; color:var(--brun); font-weight:700; }
+.sf-stat .l { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gris); font-family:var(--sans); }
+
+/* ═══════ SECTION COLLECTIONS (grille éditoriale 2 colonnes) ═══════ */
+.collections { background:var(--ivoire2); }
+.coll-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:52px; }
+.coll-item {
+  position:relative; overflow:hidden; cursor:pointer;
+  height:380px; display:flex; align-items:flex-end; padding:36px;
+}
+.coll-bg { position:absolute; inset:0; transition:transform .5s; font-size:130px; display:flex; align-items:center; justify-content:center; }
+.coll-item:hover .coll-bg { transform:scale(1.05); }
+.coll-overlay { position:absolute; inset:0; transition:opacity .3s; }
+.coll-content { position:relative; z-index:2; }
+.coll-eyebrow { font-size:9px; letter-spacing:3px; text-transform:uppercase; font-family:var(--sans); margin-bottom:8px; }
+.coll-title { font-family:var(--serif); font-size:28px; font-weight:400; margin-bottom:14px; }
+.coll-btn {
+  display:inline-block; padding:8px 20px; border:1px solid currentColor;
+  font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  font-family:var(--sans); cursor:pointer; background:transparent;
+  transition:all .3s; font-weight:500;
+}
+
+/* ═══════ SECTION TÉMOIGNAGES / SAISON ═══════ */
+.actualites { background:var(--blanc); }
+.actu-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:52px; }
+.actu-card { cursor:pointer; }
+.actu-img {
+  height:260px; overflow:hidden; margin-bottom:20px;
+  display:flex; align-items:center; justify-content:center; font-size:80px;
+  position:relative;
+}
+.actu-img::after { content:''; position:absolute; inset:0; background:rgba(44,26,14,.0); transition:background .3s; }
+.actu-card:hover .actu-img::after { background:rgba(44,26,14,.08); }
+.actu-meta { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--or); font-family:var(--sans); margin-bottom:10px; }
+.actu-title { font-family:var(--serif); font-size:21px; color:var(--brun); margin-bottom:10px; font-weight:500; line-height:1.3; }
+.actu-body { font-family:var(--cond); font-size:14px; color:var(--gris); line-height:1.6; font-style:italic; }
+
+/* ═══════ CTA NEWSLETTER ═══════ */
+.newsletter {
+  background:var(--brun); padding:90px 80px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.newsletter::before {
+  content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%);
+  width:600px; height:600px; border-radius:50%;
+  background:radial-gradient(circle, rgba(184,150,62,.08) 0%, transparent 70%);
+}
+.newsletter-eyebrow { font-size:9px; letter-spacing:5px; text-transform:uppercase; color:var(--or); font-family:var(--sans); margin-bottom:18px; }
+.newsletter h2 { font-family:var(--serif); font-size:44px; color:var(--blanc); font-weight:400; margin-bottom:12px; }
+.newsletter h2 em { font-style:italic; color:var(--or2); }
+.newsletter p { font-family:var(--cond); font-size:17px; color:rgba(255,255,255,.55); margin-bottom:36px; font-weight:300; }
+.newsletter-form { display:flex; gap:0; justify-content:center; max-width:480px; margin:0 auto 28px; }
+.nl-input {
+  flex:1; padding:14px 20px; background:transparent; border:1px solid rgba(255,255,255,.2);
+  color:var(--blanc); font-family:var(--sans); font-size:12px; letter-spacing:1px;
+  outline:none;
+}
+.nl-input::placeholder { color:rgba(255,255,255,.35); }
+.nl-btn {
+  padding:14px 28px; background:var(--or); color:var(--brun); border:none;
+  font-family:var(--sans); font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; font-weight:600; transition:background .2s;
+}
+.nl-btn:hover { background:var(--or2); }
+.newsletter-social { display:flex; justify-content:center; gap:24px; }
+.social-link { color:rgba(255,255,255,.4); font-size:11px; letter-spacing:2px; text-transform:uppercase; font-family:var(--sans); text-decoration:none; transition:color .2s; }
+.social-link:hover { color:var(--or); }
+
+/* ═══════ SECTION MAGASINS ═══════ */
+.magasins-section { background:var(--ivoire); }
+.mag-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(44,26,14,.08); margin-top:52px; }
+.mag-card {
+  background:var(--blanc); padding:32px 28px; cursor:pointer; transition:all .3s;
+  border-bottom:2px solid transparent; text-align:center;
+}
+.mag-card:hover { background:var(--ivoire); border-bottom-color:var(--or); }
+.mag-number { font-family:var(--serif); font-size:42px; color:var(--or-light); font-weight:900; line-height:1; margin-bottom:8px; }
+.mag-name { font-family:var(--serif); font-size:18px; color:var(--brun); margin-bottom:6px; font-weight:500; }
+.mag-tel-txt { font-size:12px; color:var(--gris); font-family:var(--sans); margin-bottom:14px; letter-spacing:.5px; }
+.mag-badge-open { display:inline-block; background:rgba(46,125,50,.1); color:#2E7D32; padding:3px 12px; border-radius:20px; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:var(--sans); font-weight:600; }
+
+/* ═══════ FOOTER ═══════ */
+footer { background:var(--brun); color:rgba(255,255,255,.5); }
+.footer-top { padding:72px 80px; display:grid; grid-template-columns:2.5fr 1fr 1fr 1fr; gap:48px; border-bottom:1px solid rgba(255,255,255,.07); }
+.foot-brand .logo-wrap { display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+.foot-logo-circle { width:44px; height:44px; border-radius:50%; background:var(--or); display:flex; align-items:center; justify-content:center; }
+.foot-logo-circle span { color:var(--brun); font-family:var(--serif); font-size:20px; font-weight:800; }
+.foot-brand-name { font-family:var(--serif); font-size:18px; color:var(--blanc); }
+.foot-brand p { font-family:var(--cond); font-size:14px; color:rgba(255,255,255,.45); line-height:1.7; font-style:italic; max-width:280px; }
+.foot-col h4 { font-family:var(--sans); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--or); margin-bottom:20px; }
+.foot-col a, .foot-col p { font-family:var(--sans); font-size:12px; color:rgba(255,255,255,.45); text-decoration:none; display:block; margin-bottom:10px; transition:color .2s; letter-spacing:.5px; }
+.foot-col a:hover { color:var(--or); }
+.footer-bottom { padding:22px 80px; display:flex; justify-content:space-between; align-items:center; font-size:10px; letter-spacing:1px; }
+.footer-bottom span { color:rgba(255,255,255,.25); font-family:var(--sans); }
+
+/* ═══════ TOAST ═══════ */
+#toast {
+  position:fixed; bottom:28px; right:28px; z-index:99999;
+  background:var(--brun); color:var(--blanc); padding:14px 22px;
+  font-family:var(--sans); font-size:12px; letter-spacing:.5px;
+  border-left:3px solid var(--or); opacity:0; transform:translateY(20px);
+  transition:all .35s; pointer-events:none; max-width:340px;
+}
+#toast.show { opacity:1; transform:translateY(0); }
+
+/* ═══════ SCROLL ANIMATIONS ═══════ */
+.fade-up { opacity:0; transform:translateY(30px); transition:all .7s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ═══════ COULEUR VERT / TURQUOISE (charte icônes Instagram) ═══════ */
+/* Utilisé comme accent secondaire sur certains badges, highlights et CTA */
+.badge-vert {
+  background:var(--vert-light); color:var(--vert2);
+  padding:3px 12px; border-radius:20px; font-size:9px;
+  letter-spacing:2px; text-transform:uppercase; font-family:var(--sans); font-weight:600;
+}
+.tag-vert {
+  display:inline-block; color:var(--vert); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase; font-family:var(--sans); font-weight:600;
+}
+/* Store dot — alterner or/vert */
+.store-dot.vert { background:var(--vert); }
+/* Accent vert sur les stats savoir-faire */
+.sf-stat .n.vert { color:var(--vert2); }
+/* Ligne décorative verte pour séparer les sections */
+.vert-divider { width:50px; height:2px; background:var(--vert); margin:12px 0; }
+
+/* ═══════ SECTION INSTAGRAM VIDEO ═══════ */
+.insta-section {
+  background:var(--brun); padding:90px 80px; overflow:hidden; position:relative;
+}
+.insta-section::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--or), var(--vert), var(--or));
+}
+.insta-section .section-eyebrow { color:var(--vert); }
+.insta-section .section-eyebrow::before { background:var(--vert); }
+.insta-section .section-title { color:var(--blanc); }
+.insta-section .section-title em { color:var(--vert); }
+.insta-section .section-sub { color:rgba(255,255,255,.5); }
+
+.insta-layout {
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; margin-top:52px;
+}
+/* Embed vidéo Instagram */
+.insta-video-wrap {
+  position:relative;
+  background:var(--brun2);
+  border:1px solid rgba(126,200,200,.2);
+  border-radius:4px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  min-height:480px;
+}
+.insta-video-wrap iframe {
+  width:100%; min-height:480px; border:none; display:block;
+}
+/* Fallback quand l'embed est bloqué */
+.insta-fallback {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; padding:40px; text-align:center;
+}
+.insta-fallback .play-btn {
+  width:80px; height:80px; border-radius:50%;
+  background:linear-gradient(135deg,var(--vert),var(--or));
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; cursor:pointer; transition:transform .2s;
+}
+.insta-fallback .play-btn:hover { transform:scale(1.08); }
+.insta-fallback p { color:rgba(255,255,255,.6); font-family:var(--cond); font-size:14px; font-style:italic; line-height:1.6; }
+.insta-fallback a {
+  display:inline-flex; align-items:center; gap:8px;
+  color:var(--vert); font-family:var(--sans); font-size:11px;
+  letter-spacing:2px; text-transform:uppercase; text-decoration:none;
+  border:1px solid rgba(126,200,200,.4); padding:10px 24px; transition:all .3s;
+}
+.insta-fallback a:hover { background:rgba(126,200,200,.1); border-color:var(--vert); }
+
+/* Infos instagram à droite de la vidéo */
+.insta-info { color:rgba(255,255,255,.8); }
+.insta-handle {
+  display:flex; align-items:center; gap:14px; margin-bottom:32px;
+}
+.insta-avatar {
+  width:56px; height:56px; border-radius:50%; background:var(--brun2);
+  border:2px solid var(--vert); display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-size:20px; font-weight:700; color:var(--or);
+}
+.insta-handle-text .username { font-family:var(--sans); font-size:14px; font-weight:600; color:var(--blanc); letter-spacing:.5px; }
+.insta-handle-text .fullname { font-family:var(--cond); font-size:13px; color:rgba(255,255,255,.5); font-style:italic; }
+
+.insta-stats { display:flex; gap:36px; margin-bottom:36px; padding:24px; background:rgba(255,255,255,.04); border:1px solid rgba(126,200,200,.1); }
+.insta-stat .n { font-family:var(--serif); font-size:28px; color:var(--vert); font-weight:600; }
+.insta-stat .l { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.4); font-family:var(--sans); margin-top:2px; }
+
+.insta-desc { font-family:var(--cond); font-size:16px; color:rgba(255,255,255,.55); line-height:1.7; font-weight:300; margin-bottom:28px; font-style:italic; }
+
+.insta-recent-title { font-family:var(--sans); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--vert); margin-bottom:16px; }
+.insta-grid-mini {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:28px;
+}
+.insta-mini-item {
+  height:80px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:28px; transition:opacity .2s; position:relative; overflow:hidden;
+}
+.insta-mini-item:hover { opacity:.8; }
+.insta-mini-item::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(126,200,200,.12); opacity:0; transition:opacity .2s;
+}
+.insta-mini-item:hover::after { opacity:1; }
+
+.btn-insta {
+  display:inline-flex; align-items:center; gap:10px;
+  background:transparent; border:1px solid var(--vert);
+  color:var(--vert); padding:13px 28px;
+  font-family:var(--sans); font-size:10px; letter-spacing:2.5px;
+  text-transform:uppercase; cursor:pointer; transition:all .3s; font-weight:500;
+}
+.btn-insta:hover { background:var(--vert); color:var(--brun); }
+
+/* ═══════ SCROLLBAR ═══════ */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--ivoire); }
+::-webkit-scrollbar-thumb { background:var(--or); border-radius:2px; }
+
+/* ═══════ DASHBOARD OVERLAY ═══════ */
+.dash-overlay {
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(13,30,30,.96); overflow-y:auto;
+  font-family:var(--sans);
+}
+.dash-overlay.open { display:block; animation:dashIn .35s ease; }
+@keyframes dashIn { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
+
+.dash-topbar {
+  background:#0D4040; padding:14px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:10; border-bottom:1px solid rgba(90,191,191,.15);
+}
+.dash-title { font-family:var(--serif); font-size:20px; color:#C9A84C; }
+.dash-title small { font-family:var(--sans); font-size:10px; color:#7ED8D8; display:block; letter-spacing:2px; text-transform:uppercase; }
+.dash-close {
+  width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:#fff; font-size:20px; border:1px solid rgba(255,255,255,.12); transition:.2s;
+}
+.dash-close:hover { background:rgba(201,168,76,.2); color:#C9A84C; }
+
+.dash-nav {
+  display:flex; gap:2px; background:rgba(255,255,255,.05);
+  padding:8px 28px; overflow-x:auto; border-bottom:1px solid rgba(90,191,191,.08);
+}
+.dash-tab {
+  padding:8px 18px; border-radius:8px; font-size:11px; font-weight:600;
+  cursor:pointer; color:rgba(255,255,255,.5); transition:.2s; white-space:nowrap;
+}
+.dash-tab:hover { color:#7ED8D8; background:rgba(255,255,255,.05); }
+.dash-tab.active { background:rgba(58,158,158,.18); color:#7ED8D8; }
+
+.dash-body { padding:24px 28px; }
+
+/* KPI row */
+.d-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.d-kpi {
+  background:rgba(255,255,255,.05); border:1px solid rgba(90,191,191,.12);
+  border-radius:10px; padding:18px; border-top:3px solid transparent;
+}
+.d-kpi.c1{border-top-color:#3A9E9E} .d-kpi.c2{border-top-color:#C9A84C}
+.d-kpi.c3{border-top-color:#27AE60} .d-kpi.c4{border-top-color:#E74C3C}
+.d-kpi-val { font-size:24px; font-weight:700; color:#fff; line-height:1; }
+.d-kpi-val small { font-size:13px; color:#aaa; font-weight:400; margin-left:2px; }
+.d-kpi-lbl { font-size:10px; color:#7ED8D8; margin-top:5px; letter-spacing:.5px; }
+
+/* Charts */
+.d-charts { display:grid; grid-template-columns:1.5fr 1fr; gap:14px; margin-bottom:22px; }
+.d-card {
+  background:rgba(255,255,255,.05); border:1px solid rgba(90,191,191,.1);
+  border-radius:10px; padding:18px;
+}
+.d-card.full { grid-column:1/-1; }
+.d-card-title { font-size:12px; font-weight:700; color:#7ED8D8; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; }
+.d-card-sub { font-size:10px; color:rgba(255,255,255,.35); }
+.d-cw { position:relative; height:200px; }
+.d-cw.tall { height:240px; }
+
+/* Tables */
+.d-table-wrap { overflow-x:auto; }
+.d-table { width:100%; border-collapse:collapse; font-size:11px; }
+.d-table th { background:rgba(13,64,64,.8); color:#7ED8D8; padding:9px 12px; text-align:left; font-size:9px; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+.d-table td { padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.05); color:rgba(255,255,255,.8); }
+.d-table tr:hover td { background:rgba(90,191,191,.05); }
+.d-table .dnum { text-align:right; font-weight:600; color:#7ED8D8; }
+.d-table .dca { text-align:right; font-weight:700; color:#C9A84C; }
+.d-search {
+  width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(90,191,191,.2);
+  border-radius:8px; padding:9px 14px; color:#fff; font-family:var(--sans); font-size:11px;
+  margin-bottom:14px; outline:none; transition:.2s;
+}
+.d-search:focus { border-color:#3A9E9E; background:rgba(255,255,255,.09); }
+
+/* Progress bars */
+.d-prog-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.d-prog-lbl { font-size:10px; color:rgba(255,255,255,.75); min-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.d-prog-bg { flex:1; height:6px; background:rgba(255,255,255,.08); border-radius:3px; overflow:hidden; }
+.d-prog-fill { height:100%; border-radius:3px; transition:width 1.2s ease; }
+.d-prog-val { font-size:10px; font-weight:700; color:#7ED8D8; min-width:36px; text-align:right; }
+
+/* Stores */
+.d-stores { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:22px; }
+.d-store {
+  background:rgba(255,255,255,.05); border:1px solid rgba(90,191,191,.1);
+  border-radius:10px; padding:14px; border-bottom:3px solid #3A9E9E; transition:.2s;
+}
+.d-store.top { border-bottom-color:#C9A84C; }
+.d-store-name { font-size:11px; font-weight:700; color:#7ED8D8; margin-bottom:4px; }
+.d-store-val { font-size:22px; font-weight:700; color:#fff; }
+.d-store-lbl { font-size:9px; color:rgba(255,255,255,.35); margin-top:2px; }
+.d-store-bar { height:3px; background:rgba(255,255,255,.08); border-radius:2px; margin-top:10px; }
+.d-store-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#3A9E9E,#7ED8D8); transition:1s ease; }
+
+/* MP badges */
+.d-mp-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:22px; }
+.d-mp-card {
+  background:rgba(255,255,255,.05); border:1px solid rgba(90,191,191,.1);
+  border-radius:10px; padding:14px 10px; text-align:center;
+}
+.d-mp-ico { font-size:24px; margin-bottom:6px; }
+.d-mp-name { font-size:9px; color:#7ED8D8; letter-spacing:.5px; text-transform:uppercase; margin-bottom:4px; }
+.d-mp-cnt { font-size:18px; font-weight:700; color:#fff; }
+
+/* Ecom panel */
+.d-ecom-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:22px; }
+.d-prod-card {
+  background:rgba(255,255,255,.05); border:1px solid rgba(90,191,191,.1);
+  border-radius:10px; overflow:hidden; transition:.3s; cursor:pointer;
+}
+.d-prod-card:hover { border-color:#3A9E9E; transform:translateY(-2px); }
+.d-prod-img {
+  height:90px; display:flex; align-items:center; justify-content:center;
+  font-size:38px; position:relative;
+}
+.d-prod-badge {
+  position:absolute; top:6px; right:6px; background:#C9A84C; color:#0D4040;
+  font-size:8px; font-weight:700; padding:2px 7px; border-radius:6px;
+}
+.d-prod-body { padding:10px; }
+.d-prod-name { font-size:10px; font-weight:700; color:#fff; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.d-prod-cat { font-size:9px; color:#7ED8D8; margin-bottom:8px; }
+.d-prod-foot { display:flex; align-items:center; justify-content:space-between; }
+.d-prod-price { font-size:14px; font-weight:700; color:#C9A84C; }
+.d-prod-btn {
+  width:26px; height:26px; background:#3A9E9E; border:none; border-radius:7px;
+  color:#fff; font-size:16px; cursor:pointer; transition:.2s; display:flex; align-items:center; justify-content:center;
+}
+.d-prod-btn:hover { background:#1D6F6F; }
+
+/* Cart float */
+.d-cart {
+  position:sticky; bottom:20px; left:0; right:0;
+  display:flex; justify-content:center; pointer-events:none;
+}
+.d-cart-btn {
+  pointer-events:all; background:#0D4040; color:#fff; border:1px solid rgba(90,191,191,.3);
+  border-radius:50px; padding:12px 24px; font-size:12px; font-weight:700;
+  font-family:var(--sans); cursor:pointer; transition:.3s;
+  display:flex; align-items:center; gap:10px; box-shadow:0 6px 24px rgba(0,0,0,.4);
+}
+.d-cart-btn:hover { background:#1D6F6F; transform:scale(1.04); }
+.d-cart-bbl {
+  background:#C9A84C; color:#0D4040; width:22px; height:22px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;
+}
+
+/* Pill statut */
+.dpill { display:inline-block; padding:2px 9px; border-radius:10px; font-size:9px; font-weight:700; }
+.dpill-g { background:rgba(39,174,96,.15); color:#27AE60; }
+.dpill-r { background:rgba(231,76,60,.12); color:#E74C3C; }
+.dpill-o { background:rgba(201,168,76,.15); color:#C9A84C; }
+
+/* Nav trigger btn */
+.btn-dash {
+  background:rgba(126,200,200,.12); color:var(--vert); border:1px solid rgba(126,200,200,.3);
+  padding:7px 16px; border-radius:6px; font-family:var(--sans); font-size:10px;
+  font-weight:600; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
+  transition:.2s;
+}
+.btn-dash:hover { background:rgba(126,200,200,.2); color:var(--vert2); }
+
+/* Roadmap */
+.d-roadmap-row { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.d-rm-phase { min-width:60px; }
+.d-rm-period { font-size:9px; font-weight:700; }
+.d-rm-label { font-size:11px; font-weight:700; color:#fff; }
+.d-rm-desc { font-size:9px; color:rgba(255,255,255,.4); }
+
+@media(max-width:900px){
+  .d-kpis,.d-stores,.d-mp-grid,.d-ecom-grid { grid-template-columns:repeat(2,1fr); }
+  .d-charts { grid-template-columns:1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ══ ANNONCE ══ -->
+<div class="announce-bar">
+  Livraison disponible à Casablanca & Mohamedia — <span>7 Magasins ouverts 7j/7</span> — Commandez via WhatsApp
+</div>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="nav" id="mainNav">
+  <div class="nav-left">
+    <a href="#creations">Pâtisseries</a>
+    <a href="#creations">Traiteur</a>
+    <a href="#collections">Collections</a>
+  </div>
+  <div class="nav-logo" onclick="scrollTop()">
+    <div class="logo-mark"><span>R</span></div>
+    <div class="logo-name">La Prunelle</div>
+  </div>
+  <div class="nav-right">
+    <a href="#magasins">Nos Boutiques</a>
+    <button class="btn-dash" onclick="openDash()">📊 Analytics</button>
+    <a href="#newsletter" class="nav-icon" title="WhatsApp">💬</a>
+    <a href="#creations" class="nav-icon" title="Commander">🛒</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-circle">
+    <div class="hero-circle-inner">🎂</div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Casablanca · Depuis 2011</div>
+    <h1>L'Art de la <em>Douceur</em><br>Marocaine</h1>
+    <p class="hero-sub">Créations pâtissières d'exception — 7 boutiques à Casablanca & Mohamedia</p>
+    <div class="hero-btns">
+      <button class="btn-outline-gold" onclick="document.getElementById('creations').scrollIntoView({behavior:'smooth'})">Découvrir nos créations</button>
+      <button class="btn-filled-light" style="border-color:rgba(126,200,200,.5);color:var(--vert)" onclick="toast('💬 WhatsApp ouvert !')">💬 Commander sur WhatsApp</button>
+    </div>
+  </div>
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- ══ BANDE MAGASINS DÉFILANTE ══ -->
+<div class="stores-band">
+  <div class="stores-inner">
+    <!-- Duplicated for infinite scroll -->
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Taddart</div><div class="store-tel">0522 285 697</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Walfa</div><div class="store-tel">0522 690 871</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Bsk1</div><div class="store-tel">0520 455 555</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Mohamedia</div><div class="store-tel">0523 284 407</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">2Mars</div><div class="store-tel">0522 805 252</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Laymoun</div><div class="store-tel">0522 651 488</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Aïn Sbâa</div><div class="store-tel">0522 661 614</div></div></div>
+    <!-- Duplicate -->
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Taddart</div><div class="store-tel">0522 285 697</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Walfa</div><div class="store-tel">0522 690 871</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Bsk1</div><div class="store-tel">0520 455 555</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Mohamedia</div><div class="store-tel">0523 284 407</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">2Mars</div><div class="store-tel">0522 805 252</div></div></div>
+    <div class="store-item"><div class="store-dot vert" style="background:var(--vert)"></div><div><div class="store-name" style="color:var(--vert)">Laymoun</div><div class="store-tel">0522 651 488</div></div></div>
+    <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Aïn Sbâa</div><div class="store-tel">0522 661 614</div></div></div>
+  </div>
+</div>
+
+<!-- ══ CRÉATIONS ══ -->
+<section class="creations" id="creations">
+  <div class="creations-header fade-up">
+    <div class="section-eyebrow">Nos Créations</div>
+    <h2 class="section-title">Les <em>Iconiques</em> La Prunelle</h2>
+    <p class="section-sub">Chaque création est le fruit d'un savoir-faire artisanal transmis avec passion, alliant tradition marocaine et techniques pâtissières françaises.</p>
+  </div>
+  <div class="cat-tabs fade-up">
+    <button class="cat-tab on" onclick="catSelect(this)">Tout voir</button>
+    <button class="cat-tab" onclick="catSelect(this)">Gâteaux</button>
+    <button class="cat-tab" onclick="catSelect(this)">Viennoiseries</button>
+    <button class="cat-tab" onclick="catSelect(this)">Gâteaux Marocains</button>
+    <button class="cat-tab" onclick="catSelect(this)">Traiteur</button>
+    <button class="cat-tab" onclick="catSelect(this)">Coffrets</button>
+  </div>
+  <div class="creations-grid fade-up">
+    <div class="creat-card" onclick="toast('🎂 Opéra au Chocolat — 85 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#3d1c00,#7b3f00)">
+        🎂<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Signature</div>
+        <div class="creat-name">Opéra au Chocolat</div>
+        <div class="creat-desc">Biscuit joconde, crème au beurre café, ganache chocolat noir</div>
+        <div class="creat-foot"><div class="creat-price">85 MAD</div><div class="creat-mag">Tous magasins</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🍯 M\'hancha Pralinée — 129 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#8B6914,#C9A84C)">
+        🍯<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Spécialité Maison</div>
+        <div class="creat-name">M'hancha Pralinée</div>
+        <div class="creat-desc">Amandes grillées, cannelle, miel pur d'abeille — roulée à la main</div>
+        <div class="creat-foot"><div class="creat-price">129 MAD</div><div class="creat-mag">Tous magasins</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🍓 Tarte Fraises — 65 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#C44D6E,#FF8E8E)">
+        🍓<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Saison</div>
+        <div class="creat-name">Tarte aux Fraises</div>
+        <div class="creat-desc">Pâte sablée, crème pâtissière vanille bourbon, fraises fraîches</div>
+        <div class="creat-foot"><div class="creat-price">65 MAD</div><div class="creat-mag">Taddart · Walfa · Bsk1</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🥐 Croissants — 12 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#C8900A,#F5C842)">
+        🥐<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Quotidien</div>
+        <div class="creat-name">Croissant Pur Beurre</div>
+        <div class="creat-desc">Feuilletage au beurre AOC, dorure naturelle, croustillant</div>
+        <div class="creat-foot"><div class="creat-price">12 MAD</div><div class="creat-mag">Tous magasins · Matin</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🥮 Cornes de Gazelle — 5.5 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#B8963E,#EFE8D8)">
+        🥮<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Traditionnel</div>
+        <div class="creat-name">Cornes de Gazelle</div>
+        <div class="creat-desc">Amandes, eau de fleur d'oranger — recette authentique</div>
+        <div class="creat-foot"><div class="creat-price">5.5 MAD</div><div class="creat-mag">Tous magasins</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🍬 Coffret Macarons — 120 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#C4627A,#F8B4D9)">
+        🍬<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Coffret Cadeau</div>
+        <div class="creat-name">Coffret Macarons ×12</div>
+        <div class="creat-desc">6 parfums au choix : vanille, chocolat, framboise, pistache</div>
+        <div class="creat-foot"><div class="creat-price">120 MAD</div><div class="creat-mag">Taddart · Bsk1</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🍽️ Plateau Traiteur — 350 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,var(--brun),#5c3317)">
+        🍽️<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Sur Commande</div>
+        <div class="creat-name">Plateau Traiteur 30p</div>
+        <div class="creat-desc">Assortiment premium pour réceptions et événements</div>
+        <div class="creat-foot"><div class="creat-price">350 MAD</div><div class="creat-mag">Tous magasins</div></div>
+      </div>
+    </div>
+    <div class="creat-card" onclick="toast('🎄 Bûche Pistache — 220 MAD')">
+      <div class="creat-img" style="background:linear-gradient(145deg,#1a3a1a,#3d7a3d)">
+        🎄<div class="creat-overlay"></div><button class="creat-add-btn">Commander</button>
+      </div>
+      <div class="creat-body">
+        <div class="creat-badge">Saison</div>
+        <div class="creat-name">Bûche Pistache-Framboise</div>
+        <div class="creat-desc">Mousse pistache, insert framboise, glaçage miroir</div>
+        <div class="creat-foot"><div class="creat-price">220 MAD</div><div class="creat-mag">Taddart · Walfa</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:52px">
+    <button class="btn-outline-gold" style="border-color:var(--brun);color:var(--brun)" onclick="toast('📋 Catalogue complet en cours...')">Voir tout le catalogue</button>
+  </div>
+</section>
+
+<!-- ══ SAVOIR-FAIRE ══ -->
+<div class="savoir-faire fade-up">
+  <div class="sf-inner">
+    <div class="sf-visual">
+      <div class="sf-visual-pattern"></div>
+      <span style="position:relative;z-index:1">👨‍🍳</span>
+    </div>
+    <div class="sf-text">
+      <div class="sf-year">2011</div>
+      <h2 class="sf-title">L'Art de la <em>Pâtisserie</em> à la Marocaine</h2>
+      <p class="sf-body">Née à Casablanca, La Prunelle perpétue depuis plus de 13 ans l'excellence de la pâtisserie artisanale. Chaque création est pensée comme une œuvre — alliant les techniques françaises les plus raffinées à l'âme chaleureuse de la gastronomie marocaine.</p>
+      <div class="sf-stats">
+        <div class="sf-stat"><div class="n">13+</div><div class="l">Années</div></div>
+        <div class="sf-stat"><div class="n" style="color:var(--vert2)">7</div><div class="l">Boutiques</div></div>
+        <div class="sf-stat"><div class="n">200+</div><div class="l">Recettes</div></div>
+        <div class="sf-stat"><div class="n" style="color:var(--vert2)">44.7K</div><div class="l">Abonnés IG</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COLLECTIONS ══ -->
+<section class="collections" id="collections">
+  <div class="section-eyebrow fade-up">Collections</div>
+  <h2 class="section-title fade-up">Nos <em>Univers</em> Gourmands</h2>
+  <div class="coll-grid fade-up">
+    <div class="coll-item" onclick="toast('🎊 Collection Cake Design')">
+      <div class="coll-bg" style="background:linear-gradient(135deg,#2C1A0E,#5c3317)">🎂</div>
+      <div class="coll-overlay" style="background:linear-gradient(transparent,rgba(44,26,14,.85))"></div>
+      <div class="coll-content" style="color:#fff">
+        <div class="coll-eyebrow" style="color:var(--or2)">Sur Mesure</div>
+        <div class="coll-title">Cake Design</div>
+        <button class="coll-btn" style="color:#fff;border-color:rgba(255,255,255,.5)" onclick="toast('🎂 Demande Cake Design')">Personnaliser</button>
+      </div>
+    </div>
+    <div class="coll-item" onclick="toast('🕌 Collection Aïd')">
+      <div class="coll-bg" style="background:linear-gradient(135deg,#8B6914,#C9A84C)">🌙</div>
+      <div class="coll-overlay" style="background:linear-gradient(transparent,rgba(139,105,20,.85))"></div>
+      <div class="coll-content" style="color:#fff">
+        <div class="coll-eyebrow" style="color:var(--ivoire)">Tradition</div>
+        <div class="coll-title">Gâteaux Marocains</div>
+        <button class="coll-btn" style="color:#fff;border-color:rgba(255,255,255,.5)" onclick="toast('🌙 Collection Marocain')">Découvrir</button>
+      </div>
+    </div>
+    <div class="coll-item" onclick="toast('🍽️ Traiteur')">
+      <div class="coll-bg" style="background:linear-gradient(135deg,#1A2B4A,#2a4070)">🍽️</div>
+      <div class="coll-overlay" style="background:linear-gradient(transparent,rgba(26,43,74,.85))"></div>
+      <div class="coll-content" style="color:#fff">
+        <div class="coll-eyebrow" style="color:var(--or2)">Événements</div>
+        <div class="coll-title">Traiteur & Réceptions</div>
+        <button class="coll-btn" style="color:#fff;border-color:rgba(255,255,255,.5)" onclick="toast('🍽️ Devis Traiteur')">Demander un devis</button>
+      </div>
+    </div>
+    <div class="coll-item" onclick="toast('🎁 Coffrets')">
+      <div class="coll-bg" style="background:linear-gradient(135deg,#4a1a2a,#8b3a5a)">🎁</div>
+      <div class="coll-overlay" style="background:linear-gradient(transparent,rgba(74,26,42,.85))"></div>
+      <div class="coll-content" style="color:#fff">
+        <div class="coll-eyebrow" style="color:#F8B4D9">Offrir</div>
+        <div class="coll-title">Coffrets Cadeaux</div>
+        <button class="coll-btn" style="color:#fff;border-color:rgba(255,255,255,.5)" onclick="toast('🎁 Coffrets cadeaux')">Offrir La Prunelle</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ACTUALITÉS / INSPIRATION ══ -->
+<section class="actualites" id="actualites">
+  <div class="section-eyebrow fade-up">Inspiration</div>
+  <h2 class="section-title fade-up">L'<em>Univers</em> La Prunelle</h2>
+  <div class="actu-grid fade-up">
+    <div class="actu-card" onclick="toast('📸 Post Instagram')">
+      <div class="actu-img" style="background:linear-gradient(135deg,#3d1c00,#7b3f00)">🎂</div>
+      <div class="actu-meta">Cake Design · Avril 2026</div>
+      <div class="actu-title">L'art du Cake Design à la Marocaine</div>
+      <div class="actu-body">Chaque gâteau personnalisé est une création unique, imaginée avec vous pour vos moments les plus précieux.</div>
+    </div>
+    <div class="actu-card" onclick="toast('📸 Post Instagram')">
+      <div class="actu-img" style="background:linear-gradient(135deg,#8B6914,#C9A84C)">🌙</div>
+      <div class="actu-meta">Collection Ramadan · 2026</div>
+      <div class="actu-title">La Collection Ramadan &amp; Aïd 2026</div>
+      <div class="actu-body">Des pâtisseries marocaines élaborées pour partager la magie du Ramadan en famille.</div>
+    </div>
+    <div class="actu-card" onclick="toast('📸 Post Instagram')">
+      <div class="actu-img" style="background:linear-gradient(135deg,#1a3a1a,#3d7a3d)">🏪</div>
+      <div class="actu-meta">Ouverture · Aïn Sbâa</div>
+      <div class="actu-title">Nouvelle Boutique à Aïn Sbâa</div>
+      <div class="actu-body">La Prunelle continue de s'étendre pour être plus proche de vous. 7ème boutique ouverte !</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NOS MAGASINS ══ -->
+<section class="magasins-section" id="magasins">
+  <div class="section-eyebrow fade-up">Nos Boutiques</div>
+  <h2 class="section-title fade-up">7 Adresses <em>à Votre Service</em></h2>
+  <p class="section-sub fade-up">Retrouvez La Prunelle dans vos quartiers préférés, 7 jours sur 7.</p>
+  <div class="mag-grid fade-up">
+    <div class="mag-card"><div class="mag-number">01</div><div class="mag-name">Taddart</div><div class="mag-tel-txt">0522 285 697</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">02</div><div class="mag-name">Walfa</div><div class="mag-tel-txt">0522 690 871</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">03</div><div class="mag-name">Bsk1</div><div class="mag-tel-txt">0520 455 555</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">04</div><div class="mag-name">Mohamedia</div><div class="mag-tel-txt">0523 284 407</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">05</div><div class="mag-name">2Mars</div><div class="mag-tel-txt">0522 805 252</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">06</div><div class="mag-name">Laymoun</div><div class="mag-tel-txt">0522 651 488</div><div class="mag-badge-open">Ouvert</div></div>
+    <div class="mag-card"><div class="mag-number">07</div><div class="mag-name">Aïn Sbâa</div><div class="mag-tel-txt">0522 661 614</div><span class="badge-vert">Nouveau ✦</span></div>
+    <div class="mag-card" style="display:flex;align-items:center;justify-content:center;background:var(--brun);cursor:pointer" onclick="toast('💬 WhatsApp pour localiser le magasin le plus proche !')">
+      <div style="text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">💬</div>
+        <div style="font-family:var(--sans);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--or)">Trouver<br>ma boutique</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSTAGRAM / VIDÉO ══ -->
+<section class="insta-section fade-up" id="instagram">
+  <div class="section-eyebrow">@laprunellepatisserie</div>
+  <h2 class="section-title">Notre <em>Univers</em> sur Instagram</h2>
+  <p class="section-sub">44 700 abonnés nous suivent dans les coulisses de notre pâtisserie. Rejoignez la communauté La Prunelle.</p>
+  <div class="insta-layout">
+
+    <!-- VIDÉO INSTAGRAM EMBED -->
+    <div class="insta-video-wrap">
+      <!-- Embed vidéo Instagram (Reel La Prunelle) via blockquote officiel -->
+      <blockquote class="instagram-media"
+        data-instgrm-captioned
+        data-instgrm-permalink="https://www.instagram.com/reel/DHFxaI8N9Mk/"
+        data-instgrm-version="14"
+        style="background:#000; border:0; border-radius:4px; box-shadow:none; margin:0; padding:0; width:100%; min-width:326px;">
+        <!-- Fallback si l'embed est bloqué -->
+        <div class="insta-fallback">
+          <div class="play-btn" onclick="window.open('https://www.instagram.com/reel/DHFxaI8N9Mk/','_blank')">▶</div>
+          <p>Voir notre dernier Reel Instagram — Créations La Prunelle Casablanca</p>
+          <a href="https://www.instagram.com/reel/DHFxaI8N9Mk/" target="_blank">
+            <span>▶</span> Voir sur Instagram
+          </a>
+        </div>
+      </blockquote>
+      <!-- Script embed Instagram -->
+      <script async src="//www.instagram.com/embed.js"></script>
+    </div>
+
+    <!-- INFOS INSTAGRAM -->
+    <div class="insta-info">
+      <div class="insta-handle">
+        <div class="insta-avatar">R</div>
+        <div class="insta-handle-text">
+          <div class="username">@laprunellepatisserie</div>
+          <div class="fullname">La Prunelle — Pâtisserie & Traiteur · Casablanca</div>
+        </div>
+      </div>
+
+      <div class="insta-stats">
+        <div class="insta-stat"><div class="n">44.7K</div><div class="l">Abonnés</div></div>
+        <div class="insta-stat"><div class="n">500+</div><div class="l">Publications</div></div>
+        <div class="insta-stat"><div class="n">7</div><div class="l">Boutiques</div></div>
+      </div>
+
+      <p class="insta-desc">De nos ateliers à vos tables — chaque création pâtissière est immortalisée sur Instagram. Suivez-nous pour les nouveautés, promotions et inspirations gourmandes.</p>
+
+      <div class="insta-recent-title">Publications récentes</div>
+      <div class="insta-grid-mini">
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#3d1c00,#7b3f00)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🎂</div>
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#8B6914,#C9A84C)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🌙</div>
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#1a3a1a,#3d7a3d)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🍰</div>
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#4a1a2a,#8b3a5a)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🎁</div>
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#C44D6E,#FF8E8E)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🍓</div>
+        <div class="insta-mini-item" style="background:linear-gradient(135deg,#1A2B4A,#2a4070)" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">🏪</div>
+      </div>
+
+      <button class="btn-insta" onclick="window.open('https://www.instagram.com/laprunellepatisserie/','_blank')">
+        <span style="font-size:16px">📸</span> Suivre sur Instagram
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER / WHATSAPP CTA ══ -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-eyebrow">Restez connecté</div>
+  <h2>Rejoignez <em>La Prunelle</em></h2>
+  <p>Recevez nos nouveautés, promotions et invitations exclusives directement sur votre WhatsApp.</p>
+  <div class="newsletter-form">
+    <input class="nl-input" placeholder="Votre numéro WhatsApp (+212 …)" type="tel">
+    <button class="nl-btn" onclick="toast('✅ Merci ! Vous êtes inscrit(e) aux actualités La Prunelle')">S'inscrire</button>
+  </div>
+  <div class="newsletter-social">
+    <a href="#" class="social-link" onclick="toast('📸 Instagram @laprunellepatisserie')">Instagram · 44.7K</a>
+    <a href="#" class="social-link" style="color:var(--vert)" onclick="toast('💬 WhatsApp La Prunelle')">💬 WhatsApp</a>
+    <a href="#" class="social-link" onclick="toast('📘 Facebook La Prunelle')">Facebook</a>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="logo-wrap">
+        <div class="foot-logo-circle"><span>R</span></div>
+        <div class="foot-brand-name">La Prunelle</div>
+      </div>
+      <p>Pâtisserie & Boulangerie artisanale depuis 2011. L'excellence du goût, au cœur de Casablanca.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Nos créations</h4>
+      <a href="#">Pâtisseries</a>
+      <a href="#">Gâteaux Marocains</a>
+      <a href="#">Viennoiseries</a>
+      <a href="#">Traiteur</a>
+      <a href="#">Coffrets Cadeaux</a>
+    </div>
+    <div class="foot-col">
+      <h4>La Maison</h4>
+      <a href="#">Notre Histoire</a>
+      <a href="#">Savoir-faire</a>
+      <a href="#">Nos Boutiques</a>
+      <a href="#">Recrutement</a>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <p>📍 Taddart : 0522 285 697</p>
+      <p>📍 Walfa : 0522 690 871</p>
+      <p>📍 Mohamedia : 0523 284 407</p>
+      <a href="#">Voir toutes les boutiques →</a>
+      <a href="#" onclick="openDash();return false;" style="color:var(--vert)">📊 Dashboard Analytics →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 La Prunelle Pâtisserie — Casablanca, Maroc</span>
+    <span>Solution digitale by <strong style="color:rgba(255,255,255,.4)">Hilal Ridouan</strong> · Expert IT Maroc</span>
+  </div>
+</footer>
+
+<script>
+// Toast notification
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  // Animate fade-up elements
+  document.querySelectorAll('.fade-up').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) el.classList.add('visible');
+  });
+});
+
+// Category tabs
+function catSelect(el) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  toast('✅ Catégorie : ' + el.textContent);
+}
+
+function scrollTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+// Initial animation trigger
+setTimeout(() => {
+  document.querySelectorAll('.fade-up').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) el.classList.add('visible');
+  });
+}, 100);
+</script>
+
+<!-- ════════════════════════════════════════════════
+     DASHBOARD OVERLAY — La Prunelle Analytics
+     (intégré dans la vitrine + e-commerce)
+════════════════════════════════════════════════ -->
+<div class="dash-overlay" id="dashOverlay">
+
+  <!-- Top bar -->
+  <div class="dash-topbar">
+    <div class="dash-title">
+      La Prunelle
+      <small>✦ Dashboard Analytics & E-commerce</small>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font-size:11px;color:#7ED8D8;background:rgba(58,158,158,.15);padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#27AE60;display:inline-block;animation:pulse 1.5s infinite"></span>
+        Données Réelles · Juillet 2024
+      </div>
+      <div class="dash-close" onclick="closeDash()">✕</div>
+    </div>
+  </div>
+
+  <!-- Tabs nav -->
+  <div class="dash-nav">
+    <div class="dash-tab active" onclick="dTab(this,'d-analytics')">📊 Analytics</div>
+    <div class="dash-tab" onclick="dTab(this,'d-ventes')">🛒 Ventes Juillet</div>
+    <div class="dash-tab" onclick="dTab(this,'d-boutiques')">📍 Boutiques</div>
+    <div class="dash-tab" onclick="dTab(this,'d-stock')">🧪 Matières Premières</div>
+    <div class="dash-tab" onclick="dTab(this,'d-ecommerce')">🍰 Commander en ligne</div>
+    <div class="dash-tab" onclick="dTab(this,'d-services')">💡 Plan Digital</div>
+  </div>
+
+  <div class="dash-body">
+
+    <!-- ── ANALYTICS TAB ── -->
+    <div id="d-analytics">
+      <div class="d-kpis">
+        <div class="d-kpi c1">
+          <div class="d-kpi-val">149 455 <small>MAD</small></div>
+          <div class="d-kpi-lbl">💰 Chiffre d'Affaires · Juillet S1</div>
+        </div>
+        <div class="d-kpi c2">
+          <div class="d-kpi-val">1 678</div>
+          <div class="d-kpi-lbl">📦 Unités Vendues · 7 Boutiques</div>
+        </div>
+        <div class="d-kpi c3">
+          <div class="d-kpi-val">6 <small>/ 7</small></div>
+          <div class="d-kpi-lbl">🏪 Boutiques Actives S1</div>
+        </div>
+        <div class="d-kpi c4">
+          <div class="d-kpi-val">65 <small>réf.</small></div>
+          <div class="d-kpi-lbl">🍩 Références Produits (49 actives)</div>
+        </div>
+      </div>
+
+      <div class="d-charts">
+        <div class="d-card">
+          <div class="d-card-title">Ventes par Boutique — S1 <span class="d-card-sub">Juillet</span></div>
+          <div class="d-cw"><canvas id="dc1"></canvas></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-title">CA par Catégorie</div>
+          <div class="d-cw"><canvas id="dc2"></canvas></div>
+        </div>
+      </div>
+
+      <div class="d-card full" style="margin-bottom:22px">
+        <div class="d-card-title">🏆 Top 15 Produits — Quantités Vendues</div>
+        <div id="d-top-bars"></div>
+      </div>
+
+      <div style="background:rgba(13,64,64,.6);border:1px solid rgba(90,191,191,.15);border-radius:10px;padding:18px">
+        <div style="font-size:12px;font-weight:700;color:#7ED8D8;margin-bottom:14px">💡 Insights Clés</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:rgba(255,255,255,.04);padding:12px;border-radius:8px;border-left:3px solid #3A9E9E">
+            <div style="font-size:11px;color:rgba(255,255,255,.8);line-height:1.5"><strong style="color:#7ED8D8">RABAT</strong> · 1re boutique (453 ud) devant <strong style="color:#7ED8D8">BOURGOUNE</strong> (423 ud). BOUSKOURA 2 à activer.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);padding:12px;border-radius:8px;border-left:3px solid #C9A84C">
+            <div style="font-size:11px;color:rgba(255,255,255,.8);line-height:1.5"><strong style="color:#C9A84C">BEHLA</strong> bestseller absolu (243 unités) — forte demande pâtisserie orientale format familial.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);padding:12px;border-radius:8px;border-left:3px solid #27AE60">
+            <div style="font-size:11px;color:rgba(255,255,255,.8);line-height:1.5">Panier moyen <strong style="color:#27AE60">89 MAD/unité</strong>. Plateaux premium 250 MAD tirent le CA vers le haut.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);padding:12px;border-radius:8px;border-left:3px solid #7ED8D8">
+            <div style="font-size:11px;color:rgba(255,255,255,.8);line-height:1.5"><strong style="color:#7ED8D8">75 matières premières</strong> · 21 familles. Gestion de stock digitale = quick-win immédiat.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VENTES TAB ── -->
+    <div id="d-ventes" style="display:none">
+      <input class="d-search" id="dSearchProd" placeholder="🔍 Chercher un produit..." oninput="dFilterTable()">
+      <div class="d-card full">
+        <div class="d-card-title">📋 65 Produits × 7 Boutiques · Juillet S1</div>
+        <div class="d-table-wrap">
+          <table class="d-table">
+            <thead><tr>
+              <th>#</th><th>Produit</th>
+              <th>BOUSK.1</th><th>BOURG.</th><th>2MARS</th>
+              <th>FORAT</th><th>ROUDANI</th><th>BOUSK.2</th><th>RABAT</th>
+              <th>TOTAL</th><th>PU (MAD)</th><th>CA (MAD)</th><th>Statut</th>
+            </tr></thead>
+            <tbody id="dProdTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOUTIQUES TAB ── -->
+    <div id="d-boutiques" style="display:none">
+      <div class="d-stores" id="dStoresGrid"></div>
+      <div class="d-charts">
+        <div class="d-card">
+          <div class="d-card-title">Comparatif Boutiques</div>
+          <div class="d-cw tall"><canvas id="dc3"></canvas></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-title">Part de Marché</div>
+          <div class="d-cw tall"><canvas id="dc4"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STOCK / MP TAB ── -->
+    <div id="d-stock" style="display:none">
+      <div class="d-mp-grid" id="dMpGrid"></div>
+      <div class="d-charts">
+        <div class="d-card">
+          <div class="d-card-title">Répartition MP par Famille</div>
+          <div class="d-cw"><canvas id="dc5"></canvas></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-title">Top MP par Prix Unitaire (MAD/kg)</div>
+          <div id="d-mp-bars" style="padding-top:4px"></div>
+        </div>
+      </div>
+      <div class="d-card full">
+        <input class="d-search" id="dSearchMP" placeholder="🔍 Chercher une matière première..." oninput="dFilterMP()">
+        <div class="d-table-wrap">
+          <table class="d-table">
+            <thead><tr><th>Code</th><th>Famille</th><th>Désignation</th><th>Fournisseur</th><th>Prix U (MAD)</th></tr></thead>
+            <tbody id="dMpTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ECOMMERCE TAB ── -->
+    <div id="d-ecommerce" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap">
+        <div style="font-size:14px;font-weight:700;color:#7ED8D8">🍰 Commandez en ligne — La Prunelle</div>
+        <div style="display:flex;gap:8px">
+          <select class="d-search" style="width:auto;margin:0;padding:7px 12px" id="dCatFilt" onchange="dBuildEcom()">
+            <option value="">Toutes catégories</option>
+            <option value="Plateaux">🎁 Plateaux</option>
+            <option value="Orientale">🍯 Pâtisserie Orientale</option>
+            <option value="Sablés">🍪 Sablés</option>
+            <option value="Fekkas">🥜 Fekkas</option>
+            <option value="Traiteur">🥗 Traiteur</option>
+          </select>
+          <select class="d-search" style="width:auto;margin:0;padding:7px 12px" id="dSortFilt" onchange="dBuildEcom()">
+            <option value="pop">Plus populaires</option>
+            <option value="pa">Prix ↑</option>
+            <option value="pd">Prix ↓</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-ecom-grid" id="dEcomGrid"></div>
+      <div class="d-cart">
+        <button class="d-cart-btn" id="dCartBtn" onclick="dShowCart()">
+          🛒 Mon Panier
+          <div class="d-cart-bbl" id="dCartBbl">0</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── SERVICES TAB ── -->
+    <div id="d-services" style="display:none">
+      <div class="d-kpis">
+        <div class="d-kpi c1" style="cursor:default">
+          <div style="font-size:22px;margin-bottom:8px">🌐</div>
+          <div class="d-kpi-val" style="font-size:16px">Site Vitrine</div>
+          <div class="d-kpi-lbl">Design premium · SEO · Instagram</div>
+        </div>
+        <div class="d-kpi c2">
+          <div style="font-size:22px;margin-bottom:8px">🛒</div>
+          <div class="d-kpi-val" style="font-size:16px">E-commerce</div>
+          <div class="d-kpi-lbl">Commandes · Paiement CMI · Livraison</div>
+        </div>
+        <div class="d-kpi c3">
+          <div style="font-size:22px;margin-bottom:8px">📊</div>
+          <div class="d-kpi-val" style="font-size:16px">Dashboard</div>
+          <div class="d-kpi-lbl">Ventes temps réel · Stock · 7 boutiques</div>
+        </div>
+        <div class="d-kpi c4">
+          <div style="font-size:22px;margin-bottom:8px">📱</div>
+          <div class="d-kpi-val" style="font-size:16px">App Mobile</div>
+          <div class="d-kpi-lbl">Fidélité · Notifs · Click & Collect</div>
+        </div>
+      </div>
+      <div class="d-charts">
+        <div class="d-card">
+          <div class="d-card-title">🗓 Roadmap 6 Mois</div>
+          <div id="d-roadmap-el"></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-title">💰 ROI Projeté 12 Mois</div>
+          <div class="d-cw"><canvas id="dc6"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dash-body -->
+</div><!-- /dash-overlay -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ─── DASHBOARD DATA ─────────────────────────────────────────────────────────
+const DStores = ['BOUSKOURA 1','BOURGOUNE','2MARS','FORAT','ROUDANI','BOUSKOURA 2','RABAT'];
+const DS1 = [138,423,31,360,273,0,453];
+const DColors = ['#3A9E9E','#1D6F6F','#5BBFBF','#C9A84C','#7ED8D8','#555','#2E6B3A'];
+
+const DProducts = [
+  {art:"PLATEAUX BELDI",s:[2,16,0,10,6,0,11],t:45,p:240,c:"Plateaux"},
+  {art:"PLATEAUX BELDI (PT)",s:[4,10,0,4,8,0,8],t:34,p:130,c:"Plateaux"},
+  {art:"PLATEAUX PRESTIGE",s:[0,10,0,6,6,0,9],t:31,p:250,c:"Plateaux"},
+  {art:"PLATEAUX PRESTIGE (PT)",s:[0,10,0,0,6,0,8],t:24,p:140,c:"Plateaux"},
+  {art:"PLATEAUX SABLE",s:[9,8,0,7,0,0,11],t:35,p:170,c:"Plateaux"},
+  {art:"PLATEAUX SABLE (PT)",s:[5,10,0,6,0,0,8],t:29,p:100,c:"Plateaux"},
+  {art:"PLATEAU MACARON",s:[0,0,0,0,0,0,0],t:0,p:300,c:"Plateaux"},
+  {art:"BEHLA",s:[4,30,0,51,15,0,24],t:124,p:65,c:"Orientale"},
+  {art:"BEHLA (PT)",s:[20,35,4,12,12,0,36],t:119,p:80,c:"Orientale"},
+  {art:"CORNE GAZELLE",s:[5,0,3,3,6,0,15],t:32,p:100,c:"Orientale"},
+  {art:"CORNE GAZELLE (PT)",s:[7,10,0,9,4,0,23],t:53,p:120,c:"Orientale"},
+  {art:"MHANCHA",s:[5,10,0,17,6,0,26],t:64,p:95,c:"Orientale"},
+  {art:"MHANCHA KG",s:[0,4,0,3,0,0,9],t:16,p:150,c:"Orientale"},
+  {art:"GHRIYBA AMANDE",s:[0,5,2,5,0,0,8],t:20,p:95,c:"Orientale"},
+  {art:"GHRIYBA NOIX",s:[0,5,0,6,6,0,14],t:31,p:105,c:"Orientale"},
+  {art:"BRIWATE RECTANGLE",s:[0,5,0,5,5,0,8],t:23,p:110,c:"Orientale"},
+  {art:"CHEBAKIYA",s:[0,10,2,5,0,0,13],t:30,p:130,c:"Orientale"},
+  {art:"SABLE PRALINE",s:[0,8,0,6,0,0,10],t:24,p:80,c:"Sablés"},
+  {art:"SABLE CONFITURE",s:[10,20,0,18,10,0,35],t:93,p:80,c:"Sablés"},
+  {art:"SABLE CONFITURE (PT)",s:[8,20,0,16,10,0,35],t:89,p:65,c:"Sablés"},
+  {art:"SALE SUCRE",s:[5,15,3,12,8,0,21],t:64,p:70,c:"Sablés"},
+  {art:"SABLE DATTE",s:[0,4,0,3,0,0,7],t:14,p:65,c:"Sablés"},
+  {art:"SABLE MARCHEM",s:[5,12,0,10,8,0,15],t:50,p:65,c:"Sablés"},
+  {art:"FEKKAS AMANDE",s:[10,25,0,20,12,0,34],t:101,p:80,c:"Fekkas"},
+  {art:"FEKKAS AMANDE (PT)",s:[5,12,0,10,8,0,17],t:52,p:70,c:"Fekkas"},
+  {art:"FEKKAS NOIX",s:[5,12,0,10,5,0,16],t:48,p:95,c:"Fekkas"},
+  {art:"FEKKAS NOIX (PT)",s:[3,6,0,5,3,0,8],t:25,p:80,c:"Fekkas"},
+  {art:"FEKKAS CREME FRAICHE",s:[3,8,0,6,4,0,12],t:33,p:30,c:"Fekkas"},
+  {art:"CREVETTE VERMICELLE",s:[2,4,0,2,2,0,4],t:14,p:100,c:"Traiteur"},
+  {art:"POULET FROMAGE",s:[2,4,0,3,2,0,5],t:16,p:90,c:"Traiteur"},
+  {art:"PASTIES POULET",s:[1,2,0,2,2,0,4],t:11,p:220,c:"Traiteur"},
+  {art:"PASTIES FRUITS MER",s:[2,4,0,3,2,0,6],t:17,p:200,c:"Traiteur"},
+  {art:"RICHBANDS",s:[4,8,0,7,5,0,10],t:34,p:95,c:"Autres"},
+  {art:"MACARON BELDI",s:[6,12,0,8,6,0,18],t:50,p:80,c:"Autres"},
+  {art:"CARRE NOGA",s:[3,7,0,5,4,0,9],t:28,p:70,c:"Autres"}
+];
+
+const DMPData = [
+  {c:"FA02",f:"FRUIT À COQUE",d:"Amande RIFI",frs:"ABDELALI",p:75},
+  {c:"FA03",f:"FRUIT À COQUE",d:"Amande effilée",frs:"LHAJ YOUNESS",p:82},
+  {c:"FA26",f:"FRUIT À COQUE",d:"Pistache",frs:"ABDELALI",p:210},
+  {c:"FA27",f:"FRUIT À COQUE",d:"Noisette",frs:"ABDELALI",p:88},
+  {c:"FA25",f:"FRUIT À COQUE",d:"Acajou",frs:"ABDELALI",p:110},
+  {c:"CH32",f:"CHOCOLAT",d:"Chocovic blanc",frs:"CANAL FOOD",p:56.67},
+  {c:"CH33",f:"CHOCOLAT",d:"Chocovic lait",frs:"CANAL FOOD",p:56.67},
+  {c:"CH34",f:"CHOCOLAT",d:"Chocovic Noir",frs:"CANAL FOOD",p:53.33},
+  {c:"LB01",f:"LAITIER",d:"Beurre IRICH",frs:"LACTO GROUPE",p:68.42},
+  {c:"LC06",f:"LAITIER",d:"Crème délice",frs:"CANILIA",p:50},
+  {c:"LC07",f:"LAITIER",d:"Crème plus",frs:"CANILIA",p:100},
+  {c:"LF10",f:"LAITIER",d:"Fromage Kiri",frs:"BAKRIM",p:97},
+  {c:"AR41",f:"AROMES",d:"Poudre Vanille",frs:"CANAL FOOD",p:140},
+  {c:"SS01",f:"SUCRE",d:"Sucre granulé",frs:"AMELNE",p:7.66},
+  {c:"SM04",f:"SUCRE",d:"Miel",frs:"VICTUS",p:315},
+  {c:"GL38",f:"GLACAGE",d:"Nappage",frs:"CANAL FOOD",p:30.83},
+  {c:"SI39",f:"SIROP",d:"Glucose",frs:"CANAL FOOD",p:55.83},
+  {c:"OV01",f:"OVOPRODUITS",d:"Œufs",frs:"KERCH",p:0.83},
+  {c:"HU48",f:"HUILE",d:"Huile Olive",frs:"LOCAL",p:49},
+  {c:"GR28",f:"GRAINES",d:"Sésame",frs:"LOCAL",p:29},
+];
+
+const DMPFam = {
+  "FRUIT À COQUE":{n:12,i:"🥜",c:"#4A235A"},
+  "CHOCOLAT":{n:8,i:"🍫",c:"#3D1308"},
+  "LAITIER":{n:8,i:"🥛",c:"#2E6B3A"},
+  "AROMES":{n:5,i:"🌸",c:"#7D3C98"},
+  "SUCRE":{n:4,i:"🍬",c:"#8B5E3C"},
+  "HYGIENE":{n:3,i:"🧼",c:"#555"},
+  "OVOPRODUITS":{n:2,i:"🥚",c:"#B7770D"},
+  "GRAINES":{n:2,i:"🌿",c:"#1A5276"},
+  "HUILE":{n:2,i:"🫙",c:"#2E6B3A"},
+  "AUTRES":{n:5,i:"📦",c:"#3A9E9E"}
+};
+
+const EGRAD = {
+  Plateaux:"linear-gradient(135deg,#1D6F6F,#3A9E9E)",
+  Orientale:"linear-gradient(135deg,#2E4057,#4A235A)",
+  Sablés:"linear-gradient(135deg,#2E6B3A,#3A9E9E)",
+  Fekkas:"linear-gradient(135deg,#8B5E3C,#C9A84C)",
+  Traiteur:"linear-gradient(135deg,#B7770D,#C9A84C)",
+  Autres:"linear-gradient(135deg,#3A9E9E,#1D6F6F)"
+};
+const EICO = {Plateaux:"🎁",Orientale:"🍯",Sablés:"🍪",Fekkas:"🥜",Traiteur:"🥗",Autres:"🍬"};
+
+Chart.defaults.font.family = "Montserrat, sans-serif";
+Chart.defaults.font.size = 10;
+Chart.defaults.color = "rgba(255,255,255,.6)";
+
+let dCharts = {};
+let dCartN = 0;
+let dInited = {c1:false,c3:false,c5:false,c6:false};
+
+// ─── OPEN / CLOSE ────────────────────────────────────────────────────────────
+function openDash(){
+  document.getElementById('dashOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>dInitCharts('c1'),80);
+}
+function closeDash(){
+  document.getElementById('dashOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDash(); });
+
+// ─── TAB SWITCH ──────────────────────────────────────────────────────────────
+function dTab(el,id){
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#dashOverlay .dash-body > div').forEach(d=>d.style.display='none');
+  document.getElementById(id).style.display='block';
+  // Lazy init charts
+  if(id==='d-analytics' && !dInited.c1){ dInitCharts('c1'); dInited.c1=true; }
+  if(id==='d-boutiques' && !dInited.c3){ dInitCharts('c3'); dInited.c3=true; }
+  if(id==='d-stock' && !dInited.c5){ dInitCharts('c5'); dInited.c5=true; dBuildMPTables(); }
+  if(id==='d-ventes'){ dBuildProdTable(); }
+  if(id==='d-boutiques'){ dBuildStores(); }
+  if(id==='d-ecommerce'){ dBuildEcom(); }
+  if(id==='d-services' && !dInited.c6){ dInitCharts('c6'); dInited.c6=true; dBuildRoadmap(); }
+}
+
+// ─── CHARTS ──────────────────────────────────────────────────────────────────
+function dInitCharts(which){
+  // Stores bar
+  if(which==='c1'||which==='all'){
+    if(dCharts.c1) dCharts.c1.destroy();
+    dCharts.c1 = new Chart(document.getElementById('dc1'),{
+      type:'bar',
+      data:{labels:DStores,datasets:[{label:'Unités S1',data:DS1,
+        backgroundColor:DS1.map(v=>v===Math.max(...DS1)?'#C9A84C':'#3A9E9E'),
+        borderRadius:6,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{maxRotation:30}},
+          y:{grid:{color:'rgba(255,255,255,.05)'}}}}
+    });
+    // Cat doughnut
+    if(dCharts.c2) dCharts.c2.destroy();
+    dCharts.c2 = new Chart(document.getElementById('dc2'),{
+      type:'doughnut',
+      data:{labels:['Pât. Orientale','Sablés','Fekkas','Plateaux','Traiteur','Autres'],
+        datasets:[{data:[41295,30715,22190,33630,9820,11805],
+          backgroundColor:['#1D6F6F','#3A9E9E','#5BBFBF','#C9A84C','#8B5E3C','#7D3C98'],
+          borderWidth:3,borderColor:'#0D4040',hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+        plugins:{legend:{position:'bottom',labels:{padding:8,font:{size:9}}}}}
+    });
+    // Top products bars
+    const tp = [...DProducts].filter(p=>p.t>0).sort((a,b)=>b.t-a.t).slice(0,15);
+    const maxQ = tp[0].t;
+    const barsEl = document.getElementById('d-top-bars');
+    if(barsEl){
+      barsEl.innerHTML='';
+      tp.forEach((p,i)=>{
+        const pct=(p.t/maxQ*100).toFixed(0);
+        const c=['#C9A84C','#3A9E9E','#1D6F6F','#5BBFBF','#7ED8D8'][Math.min(i,4)];
+        barsEl.innerHTML+=`<div class="d-prog-row"><div class="d-prog-lbl">${p.art}</div><div class="d-prog-bg"><div class="d-prog-fill" style="width:${pct}%;background:${c}"></div></div><div class="d-prog-val">${p.t}</div></div>`;
+      });
+    }
+  }
+  // Boutiques
+  if(which==='c3'){
+    if(dCharts.c3) dCharts.c3.destroy();
+    dCharts.c3 = new Chart(document.getElementById('dc3'),{
+      type:'bar',
+      data:{labels:DStores,datasets:[{label:'Unités',data:DS1,
+        backgroundColor:DColors,borderRadius:6}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{grid:{color:'rgba(255,255,255,.05)'}},y:{grid:{display:false}}}}
+    });
+    if(dCharts.c4) dCharts.c4.destroy();
+    dCharts.c4 = new Chart(document.getElementById('dc4'),{
+      type:'pie',
+      data:{labels:DStores,datasets:[{data:DS1,backgroundColor:DColors,borderWidth:3,borderColor:'#0D4040',hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{padding:6,font:{size:9}}},
+          tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} ud (${(c.parsed/1678*100).toFixed(1)}%)`}}}}
+    });
+  }
+  // MP
+  if(which==='c5'){
+    if(dCharts.c5) dCharts.c5.destroy();
+    const fams = Object.keys(DMPFam);
+    dCharts.c5 = new Chart(document.getElementById('dc5'),{
+      type:'polarArea',
+      data:{labels:fams,datasets:[{data:fams.map(k=>DMPFam[k].n),
+        backgroundColor:fams.map(k=>DMPFam[k].c+'CC'),borderColor:'#0D4040',borderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'right',labels:{font:{size:9},padding:4}}}}
+    });
+    // MP price bars
+    const mpb = document.getElementById('d-mp-bars');
+    if(mpb){
+      mpb.innerHTML='';
+      const top = [...DMPData].filter(m=>m.p>0).sort((a,b)=>b.p-a.p).slice(0,10);
+      const mx = top[0].p;
+      top.forEach(m=>{
+        const pct=(m.p/mx*100).toFixed(0);
+        const c=m.p>=100?'#C9A84C':m.p>=50?'#3A9E9E':'#5BBFBF';
+        mpb.innerHTML+=`<div class="d-prog-row"><div class="d-prog-lbl">${m.d}</div><div class="d-prog-bg"><div class="d-prog-fill" style="width:${pct}%;background:${c}"></div></div><div class="d-prog-val">${m.p} MAD</div></div>`;
+      });
+    }
+    // MP grid cards
+    const mg = document.getElementById('dMpGrid');
+    if(mg){
+      mg.innerHTML='';
+      Object.entries(DMPFam).forEach(([k,d])=>{
+        mg.innerHTML+=`<div class="d-mp-card"><div class="d-mp-ico">${d.i}</div><div class="d-mp-name">${k}</div><div class="d-mp-cnt">${d.n}</div></div>`;
+      });
+    }
+  }
+  // ROI
+  if(which==='c6'){
+    if(dCharts.c6) dCharts.c6.destroy();
+    dCharts.c6 = new Chart(document.getElementById('dc6'),{
+      type:'line',
+      data:{labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],
+        datasets:[
+          {label:'CA Actuel',data:[149,145,152,148,155,150,158,153,160,156,162,165],
+            borderColor:'rgba(255,255,255,.3)',fill:false,borderDash:[5,5],tension:.4,pointRadius:2},
+          {label:'CA Digital',data:[149,165,188,210,235,260,288,315,340,370,395,425],
+            borderColor:'#C9A84C',fill:true,backgroundColor:'rgba(201,168,76,.1)',
+            tension:.4,borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#C9A84C'}
+        ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:9}}}},
+        scales:{x:{grid:{color:'rgba(255,255,255,.05)'}},
+          y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>v+'K'}}}}
+    });
+  }
+}
+
+// ─── TABLES ──────────────────────────────────────────────────────────────────
+function dBuildProdTable(){
+  const tb = document.getElementById('dProdTbody');
+  if(!tb||tb.children.length>0) return;
+  let h='';
+  DProducts.forEach((p,i)=>{
+    const ca=p.t*p.p;
+    const st=p.t===0?'<span class="dpill dpill-r">Inactif</span>':p.t>50?'<span class="dpill dpill-o">⭐ Top</span>':'<span class="dpill dpill-g">Actif</span>';
+    const sc=p.s.map(v=>`<td style="text-align:center;color:${v>10?'#7ED8D8':v>0?'rgba(255,255,255,.7)':'rgba(255,255,255,.2)'};font-weight:${v>10?'700':'400'}">${v||'—'}</td>`).join('');
+    h+=`<tr><td style="color:rgba(255,255,255,.4)">${i+1}</td><td style="font-weight:600">${p.art}</td>${sc}<td class="dnum">${p.t||'—'}</td><td class="dnum">${p.p||'—'}</td><td class="dca">${ca?ca.toLocaleString('fr'):'-'}</td><td>${st}</td></tr>`;
+  });
+  tb.innerHTML=h;
+}
+
+function dFilterTable(){
+  const q=document.getElementById('dSearchProd').value.toLowerCase();
+  document.querySelectorAll('#dProdTbody tr').forEach(tr=>{
+    tr.style.display=tr.cells[1].textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+function dBuildMPTables(){
+  const tb=document.getElementById('dMpTbody');
+  if(!tb||tb.children.length>0) return;
+  let h='',prev='';
+  DMPData.forEach(m=>{
+    if(m.f!==prev){
+      h+=`<tr><td colspan="5" style="background:#0D4040;color:#7ED8D8;font-size:9px;font-weight:700;letter-spacing:1.5px;padding:7px 12px">▶ ${m.f}</td></tr>`;
+      prev=m.f;
+    }
+    h+=`<tr><td style="font-family:monospace;color:rgba(255,255,255,.4);font-size:9px">${m.c}</td><td>${m.f}</td><td style="font-weight:600">${m.d}</td><td style="color:rgba(255,255,255,.45)">${m.frs}</td><td class="dnum">${m.p?m.p.toLocaleString('fr')+' MAD':'—'}</td></tr>`;
+  });
+  tb.innerHTML=h;
+}
+
+function dFilterMP(){
+  const q=document.getElementById('dSearchMP').value.toLowerCase();
+  document.querySelectorAll('#dMpTbody tr').forEach(tr=>{
+    if(tr.cells.length===1) return;
+    tr.style.display=tr.cells[2].textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+// ─── STORES ──────────────────────────────────────────────────────────────────
+function dBuildStores(){
+  const g=document.getElementById('dStoresGrid');
+  if(!g||g.children.length>0) return;
+  const mx=Math.max(...DS1);
+  DStores.forEach((s,i)=>{
+    const top=DS1[i]===mx;
+    const pct=DS1[i]/mx*100;
+    g.innerHTML+=`<div class="d-store ${top?'top':''}"><div class="d-store-name">${top?'🥇 ':''} ${s}</div><div class="d-store-val">${DS1[i].toLocaleString('fr')}</div><div class="d-store-lbl">unités · S1</div><div class="d-store-bar"><div class="d-store-fill" style="width:${pct}%"></div></div></div>`;
+  });
+}
+
+// ─── ECOM ────────────────────────────────────────────────────────────────────
+function dBuildEcom(){
+  const cat=document.getElementById('dCatFilt')?.value||'';
+  const sort=document.getElementById('dSortFilt')?.value||'pop';
+  let prods=[...DProducts].filter(p=>p.p>0);
+  if(cat) prods=prods.filter(p=>p.c===cat);
+  if(sort==='pa') prods.sort((a,b)=>a.p-b.p);
+  else if(sort==='pd') prods.sort((a,b)=>b.p-a.p);
+  else prods.sort((a,b)=>b.t-a.t);
+  const g=document.getElementById('dEcomGrid');
+  if(!g) return;
+  g.innerHTML='';
+  prods.forEach(p=>{
+    const badge=p.t>80?'<div class="d-prod-badge">⭐ Top</div>':p.t===0?'<div class="d-prod-badge" style="background:#E74C3C">Rupture</div>':'';
+    g.innerHTML+=`<div class="d-prod-card"><div class="d-prod-img" style="background:${EGRAD[p.c]||EGRAD.Autres}">${EICO[p.c]||'🍰'}${badge}</div><div class="d-prod-body"><div class="d-prod-name">${p.art}</div><div class="d-prod-cat">${p.c}</div><div class="d-prod-foot"><div class="d-prod-price">${p.p} MAD</div><button class="d-prod-btn" onclick="dAddCart()" ${p.t===0?'style="background:#555;cursor:not-allowed"':''}>+</button></div></div></div>`;
+  });
+}
+
+function dAddCart(){
+  dCartN++;
+  document.getElementById('dCartBbl').textContent=dCartN;
+}
+function dShowCart(){
+  alert('🛒 Panier La Prunelle\n'+dCartN+' article(s)\n\nEn production : paiement CMI Maroc + confirmation WhatsApp');
+}
+
+// ─── ROADMAP ─────────────────────────────────────────────────────────────────
+function dBuildRoadmap(){
+  const el=document.getElementById('d-roadmap-el');
+  if(!el) return;
+  const phases=[
+    {m:'M1-2',l:'Site Vitrine',d:'Design premium, SEO, Instagram',c:'#3A9E9E',p:100},
+    {m:'M2-3',l:'E-commerce',d:'Catalogue, panier, paiement CMI',c:'#1D6F6F',p:80},
+    {m:'M3-4',l:'Dashboard',d:'Analytics ventes, stock, 7 boutiques',c:'#C9A84C',p:60},
+    {m:'M4-5',l:'Automatisation',d:'Emails, WhatsApp, relances auto',c:'#8B5E3C',p:40},
+    {m:'M5-6',l:'App Mobile',d:'Fidélité, click & collect, notifs push',c:'#4A235A',p:20},
+  ];
+  el.innerHTML=phases.map(ph=>`
+    <div class="d-roadmap-row">
+      <div class="d-rm-phase">
+        <div class="d-rm-period" style="color:${ph.c}">${ph.m}</div>
+        <div class="d-rm-label">${ph.l}</div>
+        <div class="d-rm-desc">${ph.d}</div>
+      </div>
+      <div class="d-prog-bg" style="flex:1;height:10px">
+        <div class="d-prog-fill" style="width:${ph.p}%;background:${ph.c}"></div>
+      </div>
+    </div>`).join('');
+}
+</script>
+
+</body>
+</html>
